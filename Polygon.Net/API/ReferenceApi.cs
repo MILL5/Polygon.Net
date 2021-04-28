@@ -29,10 +29,44 @@ namespace Polygon.Net
             return responseObj.Results;
         }
 
-        // TODO: Handle pagination and other query parameters
-        public async Task<List<TickerInfo>> GetTickersAsync(string ticker)
+        // TODO: Handle pagination
+        public async Task<List<TickerInfo>> GetTickersAsync(
+            string ticker = null,
+            string tickerlt = null,
+            string tickerlte = null,
+            string tickergt = null,
+            string tickergte = null,
+            string type = null,
+            string market = null,
+            string exchange = null,
+            string cusip = null,
+            string date = null,
+            bool? active = null,
+            string sort = null,
+            string order = null,
+            int? limit = null)
         {
-            var requestUrl = $"{ _polygonSettings.ApiBaseUrl }{ TICKERS_ENDPOINT }";
+            var queryParams = new Dictionary<string, string>
+            {
+                { nameof(ticker), ticker },
+                { "ticker.lt", tickerlt },
+                { "ticker.lte", tickerlte },
+                { "ticker.gt", tickergt },
+                { "ticker.gte", tickergte },
+                { nameof(type), type },
+                { nameof(market), market },
+                { nameof(exchange), exchange },
+                { nameof(cusip), cusip },
+                { nameof(date), date },
+                { nameof(active), active?.ToString() },
+                { nameof(sort), sort },
+                { nameof(order), order },
+                { nameof(limit), limit?.ToString() },
+            };
+
+            var queryParamStr = GetQueryParameterString(queryParams);
+
+            var requestUrl = $"{ _polygonSettings.ApiBaseUrl }{ TICKERS_ENDPOINT }{ queryParamStr }";
             
             var contentStr = await Get(requestUrl);
 

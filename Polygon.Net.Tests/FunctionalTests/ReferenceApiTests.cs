@@ -34,10 +34,29 @@ namespace Polygon.Net.Tests.FunctionalTests
         [TestMethod]
         public async Task GetTickersSucceedsAsync()
         {
-            var tickers = await PolygonTestClient.GetTickersAsync(null);
+            var tickers = await PolygonTestClient.GetTickersAsync();
 
             Assert.IsNotNull(tickers);
             Assert.IsTrue(tickers.Any());
+        }
+
+        [TestMethod]
+        public async Task GetTickersWithParamsSucceedsAsync()
+        {
+            var limitParam = 10;
+
+            var tickers = await PolygonTestClient
+                .GetTickersAsync(
+                    tickergt: "A",
+                    exchange: "XNYS",
+                    sort: "ticker",
+                    active: true,
+                    order: "asc",
+                    limit: limitParam
+                );
+
+            Assert.IsNotNull(tickers);
+            Assert.AreEqual(limitParam, tickers.Count());
         }
 
         [TestMethod]
