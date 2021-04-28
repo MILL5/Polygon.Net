@@ -1,5 +1,4 @@
-﻿using Newtonsoft.Json;
-using System.Net.Http;
+﻿using System.Net.Http;
 using System.Threading.Tasks;
 using static Pineapple.Common.Preconditions;
 
@@ -7,7 +6,6 @@ namespace Polygon.Net
 {
     public partial class PolygonClient : IPolygonClient
     {
-        private readonly JsonSerializerSettings _jsonSettings;
         private readonly IPolygonDependencies _dependencies;
         public readonly PolygonSettings _polygonSettings;
 
@@ -16,11 +14,6 @@ namespace Polygon.Net
             CheckIsNotNull(nameof(dependencies), dependencies);
             _dependencies = dependencies;
             _polygonSettings = dependencies.Settings;
-            _jsonSettings = new JsonSerializerSettings
-            {
-                NullValueHandling = NullValueHandling.Ignore,
-                MissingMemberHandling = MissingMemberHandling.Ignore
-            };
         }
 
         private async Task<string> Get(string requestUrl)

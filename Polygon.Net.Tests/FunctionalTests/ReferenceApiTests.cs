@@ -28,6 +28,7 @@ namespace Polygon.Net.Tests.FunctionalTests
 
             Assert.IsNotNull(tickerDetails);
             Assert.AreEqual(appleTicker, tickerDetails.Ticker);
+            Assert.IsNotNull(tickerDetails.PhoneNumber);
         }
 
         [TestMethod]
@@ -37,6 +38,15 @@ namespace Polygon.Net.Tests.FunctionalTests
 
             Assert.IsNotNull(tickers);
             Assert.IsTrue(tickers.Any());
+        }
+
+        [TestMethod]
+        public async Task GetExchangesSucceedsAsync()
+        {
+            var exchanges = await PolygonTestClient.GetExchangesAsync();
+
+            Assert.IsNotNull(exchanges);
+            Assert.IsTrue(exchanges.Any());
         }
     }
 }
