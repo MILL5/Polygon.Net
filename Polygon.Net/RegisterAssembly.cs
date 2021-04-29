@@ -19,11 +19,11 @@ namespace Polygon.Net
             CheckIsNotNull(nameof(config), config);
 
             CheckIsNotNull(POLYGON_API_KEY_NAME, config[POLYGON_API_KEY_NAME]);
-            CheckIsNotNull(USE_PREM_OPTIONS_NAME, config[USE_PREM_OPTIONS_NAME]);
+            
             var settings = new PolygonSettings
             {
                 ApiKey = config[POLYGON_API_KEY_NAME],
-                UsePremiumOptions = bool.Parse(config[USE_PREM_OPTIONS_NAME])
+                UsePremiumOptions = config[USE_PREM_OPTIONS_NAME] != null && bool.Parse(config[USE_PREM_OPTIONS_NAME])
             };
 
             services.AddSingleton(settings);
