@@ -17,10 +17,14 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       
+      - name: Restore Dependencies
+        run: |
+          dotnet restore Polygon.Net.sln
+
       - name: Build
         run: |
-          dotnet build ${{ github.workspace }}/Polygon.Net.sln --no-restore /WarnAsError --configuration Release
+          dotnet build Polygon.Net.sln --no-restore /WarnAsError --configuration Release
 
       - name: Test
         run: |
-          dotnet test ${{ github.workspace }}/Polygon.Net.Tests/Polygon.Net.Tests.csproj --verbosity normal
+          dotnet test Polygon.Net.Tests/Polygon.Net.Tests.csproj --no-restore --verbosity normal
