@@ -11,26 +11,7 @@ namespace Polygon.Net
 
         private const string EXCHANGES_ENDPOINT = "/v1/meta/exchanges";
 
-        public async Task<TickerDetailsInfo> GetTickerDetailsAsync(string ticker, string date)
-        {
-            CheckIsNotNullOrWhitespace(nameof(ticker), ticker);
-
-            var requestUrl = $"{ _polygonSettings.ApiBaseUrl }{ TICKERS_ENDPOINT }/{ ticker }";
-
-            if(date != null)
-            {
-                requestUrl += $"?date={ date }";
-            }
-
-            var contentStr = await Get(requestUrl);
-
-            var responseObj = JsonConvert.DeserializeObject<ResponseObject<TickerDetailsInfo>>(contentStr);
-
-            return responseObj.Results;
-        }
-
-        // TODO: Handle pagination
-        public async Task<List<TickerInfo>> GetTickersAsync(
+        public async Task<PolygonResponse<List<TickerInfo>>> GetTickersAsync(
             string ticker = null,
             string tickerlt = null,
             string tickerlte = null,
@@ -44,7 +25,8 @@ namespace Polygon.Net
             bool? active = null,
             string sort = null,
             string order = null,
-            int? limit = null)
+            int? limit = null,
+            string nextUrl = null)
         {
             var queryParams = new Dictionary<string, string>
             {
@@ -64,18 +46,39 @@ namespace Polygon.Net
                 { nameof(limit), limit?.ToString() },
             };
 
-            var queryParamStr = GetQueryParameterString(queryParams);
-
-            var requestUrl = $"{ _polygonSettings.ApiBaseUrl }{ TICKERS_ENDPOINT }{ queryParamStr }";
+            string requestUrl;
+            if(nextUrl != null)
+            {
+                requestUrl = nextUrl;
+            }
+            else
+            {
+                var queryParamStr = GetQueryParameterString(queryParams);
+                requestUrl = $"{ _polygonSettings.ApiBaseUrl }{ TICKERS_ENDPOINT }{ queryParamStr }";
+            }
             
             var contentStr = await Get(requestUrl);
 
-            var responseObj = JsonConvert.DeserializeObject<ResponseObject<List<TickerInfo>>>(contentStr);
-
-            return responseObj.Results;
+            return JsonConvert.DeserializeObject<PolygonResponse<List<TickerInfo>>>(contentStr);
         }
 
-        public async Task<List<ExchangeInfo>> GetExchangesAsync()
+        public async Task<PolygonResponse<TickerDetailsInfo>> GetTickerDetailsAsync(string ticker, string date)
+        {
+            CheckIsNotNullOrWhitespace(nameof(ticker), ticker);
+
+            var requestUrl = $"{ _polygonSettings.ApiBaseUrl }{ TICKERS_ENDPOINT }/{ ticker }";
+
+            if (date != null)
+            {
+                requestUrl += $"?date={ date }";
+            }
+
+            var contentStr = await Get(requestUrl);
+
+            return JsonConvert.DeserializeObject<PolygonResponse<TickerDetailsInfo>>(contentStr);
+        }
+
+        public async Task<List<ExchangeInfo>> GetStockExchangesAsync()
         {
             var requestUrl = $"{ _polygonSettings.ApiBaseUrl }{ EXCHANGES_ENDPOINT }";
 
