@@ -1,0 +1,26 @@
+name: CI - Build and Test
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+
+  tests:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      
+      - name: Build
+        run: |
+          dotnet build ${{ github.workspace }}/Polygon.Net.sln --no-restore /WarnAsError --configuration Release
+
+      - name: Test
+        run: |
+          dotnet test ${{ github.workspace }}/Polygon.Net.Tests/Polygon.Net.Tests.csproj --verbosity normal
