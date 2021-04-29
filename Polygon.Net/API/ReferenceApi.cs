@@ -11,6 +11,8 @@ namespace Polygon.Net
 
         private const string EXCHANGES_ENDPOINT = "/v1/meta/exchanges";
 
+        private const string FINANCIALS_ENDPOINT = "/v2/reference/financials";
+
         public async Task<PolygonResponse<List<TickerInfo>>> GetTickersAsync(
             string ticker = null,
             string tickerlt = null,
@@ -85,6 +87,38 @@ namespace Polygon.Net
             var contentStr = await Get(requestUrl);
 
             return JsonConvert.DeserializeObject<List<ExchangeInfo>>(contentStr);
+        }
+
+        public async Task<PolygonResponse<List<StockFinancialInfo>>> GetStockFinancialsAsync(
+            string stocksTicker,
+            string type = null,
+            string sort = null,
+            int? limit = null,
+            string nextUrl = null)
+        {
+            CheckIsNotNullOrWhitespace(nameof(stocksTicker), stocksTicker);
+
+            var queryParams = new Dictionary<string, string>
+            {
+                { nameof(type), type },
+                { nameof(sort), sort },
+                { nameof(limit), limit?.ToString() },
+            };
+
+            string requestUrl;
+            if (nextUrl != null)
+            {
+                requestUrl = nextUrl;
+            }
+            else
+            {
+                var queryParamStr = GetQueryParameterString(queryParams);
+                requestUrl = $"{ _polygonSettings.ApiBaseUrl }{ FINANCIALS_ENDPOINT }/{ stocksTicker }{ queryParamStr }";
+            }
+
+            var contentStr = await Get(requestUrl);
+
+            return JsonConvert.DeserializeObject<PolygonResponse<List<StockFinancialInfo>>>(contentStr);
         }
     }
 }

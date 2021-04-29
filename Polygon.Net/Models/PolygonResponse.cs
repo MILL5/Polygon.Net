@@ -1,5 +1,4 @@
 ﻿using Newtonsoft.Json;
-using System.Collections.Generic;
 
 namespace Polygon.Net
 {
@@ -12,7 +11,7 @@ namespace Polygon.Net
         public string RequestId { get; set; }
 
         [JsonProperty("count")]
-        public string Count { get; set; }
+        public int Count { get; set; }
 
         [JsonProperty("next_url")]
         public string NextUrl { get; set; }
