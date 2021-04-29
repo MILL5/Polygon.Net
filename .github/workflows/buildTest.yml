@@ -26,5 +26,7 @@ jobs:
           dotnet build Polygon.Net.sln --no-restore /WarnAsError --configuration Release
 
       - name: Test
+        env:
+          PolygonApiKey: ${{ secrets.POLYGON_API_KEY }}
         run: |
           dotnet test Polygon.Net.Tests/Polygon.Net.Tests.csproj --no-restore --verbosity normal
