@@ -1,4 +1,5 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -10,6 +11,63 @@ namespace Polygon.Net.Tests.FunctionalTests
     public class ReferenceApiTests
     {
         private const string STATUS_OK = "OK";
+
+        [TestMethod]
+        public async Task GetTickerDetailsSucceedsAsync()
+        {
+            var appleTicker = "AAPL";
+
+            var tickerDetailsResponse = await PolygonTestClient.GetTickerDetailsAsync(appleTicker, null);
+
+            Assert.IsInstanceOfType(tickerDetailsResponse.Results, typeof(TickerDetailsInfo));
+
+            Assert.IsNotNull(tickerDetailsResponse);
+            Assert.AreEqual(STATUS_OK, tickerDetailsResponse.Status);
+            Assert.AreEqual(appleTicker, tickerDetailsResponse.Results.Ticker);
+            Assert.IsNotNull(tickerDetailsResponse.Results.PhoneNumber);
+        }
+
+        [TestMethod]
+        public async Task GetTickerDetailsWithDateSucceedsAsync()
+        {
+            var appleTicker = "AAPL";
+
+            var tickerDetailsResponse = await PolygonTestClient.GetTickerDetailsAsync(appleTicker, "2019-06-29");
+
+            Assert.IsInstanceOfType(tickerDetailsResponse.Results, typeof(TickerDetailsInfo));
+
+            Assert.IsNotNull(tickerDetailsResponse);
+            Assert.AreEqual(STATUS_OK, tickerDetailsResponse.Status);
+            Assert.AreEqual(appleTicker, tickerDetailsResponse.Results.Ticker);
+            Assert.IsNotNull(tickerDetailsResponse.Results.PhoneNumber);
+        }
+
+        [TestMethod]
+        public async Task GetTickerDetailsNullTickerAsync()
+        {
+            string ticker = null;
+
+            await Assert.ThrowsExceptionAsync<ArgumentNullException>(
+                async () => await PolygonTestClient.GetTickerDetailsAsync(ticker, null));
+        }
+
+        [TestMethod]
+        public async Task GetTickerDetailsEmptyTickerAsync()
+        {
+            var ticker = string.Empty;
+
+            await Assert.ThrowsExceptionAsync<ArgumentException>(
+                async () => await PolygonTestClient.GetTickerDetailsAsync(ticker, null));
+        }
+
+        [TestMethod]
+        public async Task GetTickerDetailsNonExistentTickerAsync()
+        {
+            var ticker = Guid.NewGuid().ToString();
+
+            await Assert.ThrowsExceptionAsync<PolygonHttpException>(
+                async () => await PolygonTestClient.GetTickerDetailsAsync(ticker, null));
+        }
 
         [TestMethod]
         public async Task GetTickersSucceedsAsync()
@@ -75,33 +133,18 @@ namespace Polygon.Net.Tests.FunctionalTests
         }
 
         [TestMethod]
-        public async Task GetTickerDetailsSucceedsAsync()
+        public async Task GetTickersWithBadParamsAsync()
         {
-            var appleTicker = "AAPL";
-
-            var tickerDetailsResponse = await PolygonTestClient.GetTickerDetailsAsync(appleTicker, null);
-
-            Assert.IsInstanceOfType(tickerDetailsResponse.Results, typeof(TickerDetailsInfo));
-
-            Assert.IsNotNull(tickerDetailsResponse);
-            Assert.AreEqual(STATUS_OK, tickerDetailsResponse.Status);
-            Assert.AreEqual(appleTicker, tickerDetailsResponse.Results.Ticker);
-            Assert.IsNotNull(tickerDetailsResponse.Results.PhoneNumber);
-        }
-
-        [TestMethod]
-        public async Task GetTickerDetailsWithDateSucceedsAsync()
-        {
-            var appleTicker = "AAPL";
-
-            var tickerDetailsResponse = await PolygonTestClient.GetTickerDetailsAsync(appleTicker, "2019-06-29");
-
-            Assert.IsInstanceOfType(tickerDetailsResponse.Results, typeof(TickerDetailsInfo));
-
-            Assert.IsNotNull(tickerDetailsResponse);
-            Assert.AreEqual(STATUS_OK, tickerDetailsResponse.Status);
-            Assert.AreEqual(appleTicker, tickerDetailsResponse.Results.Ticker);
-            Assert.IsNotNull(tickerDetailsResponse.Results.PhoneNumber);
+            await Assert.ThrowsExceptionAsync<PolygonHttpException>(
+                async () => 
+                await PolygonTestClient
+                .GetTickersAsync(
+                    tickergt: "weryb",
+                    exchange: "XNYS",
+                    sort: "qw",
+                    active: true,
+                    order: "asdf",
+                    limit: 123));
         }
 
         [TestMethod]
@@ -134,6 +177,49 @@ namespace Polygon.Net.Tests.FunctionalTests
             Assert.AreEqual(STATUS_OK, stockFinancialsRepsonse.Status);
             //Assert.AreEqual(stockFinancialsRepsonse.Count, stockFinancialsRepsonse.Results.Count); API doc says count is provided, but it is not
             Assert.AreEqual(limitParam, stockFinancialsRepsonse.Results.Count);
+        }
+
+        [TestMethod]
+        public async Task GetStockFinancialsNullTickerAsync()
+        {
+            string ticker = null;
+
+            await Assert.ThrowsExceptionAsync<ArgumentNullException>(
+                async () =>
+                await PolygonTestClient
+                .GetStockFinancialsAsync(
+                    stocksTicker: ticker,
+                    type: "Y",
+                    sort: "calendarDate",
+                    limit: 5));
+        }
+
+        [TestMethod]
+        public async Task GetStockFinancialsEmptyTickerAsync()
+        {
+            var ticker = string.Empty;
+
+            await Assert.ThrowsExceptionAsync<ArgumentException>(
+                async () =>
+                await PolygonTestClient
+                .GetStockFinancialsAsync(
+                    stocksTicker: ticker,
+                    type: "Y",
+                    sort: "calendarDate",
+                    limit: 5));
+        }
+
+        [TestMethod]
+        public async Task GetStockFinancialsBadParametersAsync()
+        {
+            await Assert.ThrowsExceptionAsync<PolygonHttpException>(
+                async () =>
+                await PolygonTestClient
+                .GetStockFinancialsAsync(
+                    stocksTicker: "AAPL",
+                    type: "adsfasdf",
+                    sort: "cxzvcxzcvz",
+                    limit: 500000));
         }
     }
 }
