@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
@@ -28,12 +27,12 @@ namespace Polygon.Net
             var request = new HttpRequestMessage(HttpMethod.Get, requestUrl);
 
             var response = await client.SendAsync(request);
-            
-            if (!response.IsSuccessStatusCode)
-            {
-                return null;
-            }
 
+            if(!response.IsSuccessStatusCode)
+            {
+                throw new PolygonHttpException(response.ReasonPhrase);
+            }
+            
             return await response.Content.ReadAsStringAsync();
         }
 
