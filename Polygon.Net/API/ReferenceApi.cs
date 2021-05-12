@@ -7,7 +7,7 @@ namespace Polygon.Net
 {
     public partial class PolygonClient : IPolygonClient
     {
-        private const string TICKERS_ENDPOINT = "/vX/reference/tickers";
+        private const string TICKERS_ENDPOINT = "/v3/reference/tickers";
 
         private const string EXCHANGES_ENDPOINT = "/v1/meta/exchanges";
 
