@@ -17,6 +17,7 @@
 	<PublishRepositoryUrl>true</PublishRepositoryUrl>
 	<IncludeSymbols>true</IncludeSymbols>
 	<PackageLicenseExpression>MIT</PackageLicenseExpression>
+	<PackageIcon>polygon.png</PackageIcon>
   </PropertyGroup>
 
   <ItemGroup>
@@ -33,6 +34,10 @@
   <ItemGroup>
     <None Include="..\.gitignore" Link="Solution Items\.gitignore" />
     <None Include="..\Polygon.Net.runsettings" Link="Solution Items\Polygon.Net.runsettings" />
+    <None Include="polygon.png">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
   </ItemGroup>
 
 </Project>
