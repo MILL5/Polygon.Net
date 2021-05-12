@@ -9,6 +9,8 @@ namespace Polygon.Net
     {
         private const string TICKERS_ENDPOINT = "/v3/reference/tickers";
 
+        private const string TICKERS_vX_ENDPOINT = "/vX/reference/tickers";
+
         private const string EXCHANGES_ENDPOINT = "/v1/meta/exchanges";
 
         private const string FINANCIALS_ENDPOINT = "/v2/reference/financials";
@@ -68,7 +70,7 @@ namespace Polygon.Net
         {
             CheckIsNotNullOrWhitespace(nameof(ticker), ticker);
 
-            var requestUrl = $"{ _polygonSettings.ApiBaseUrl }{ TICKERS_ENDPOINT }/{ ticker }";
+            var requestUrl = $"{ _polygonSettings.ApiBaseUrl }{ TICKERS_vX_ENDPOINT }/{ ticker }";
 
             if (date != null)
             {
