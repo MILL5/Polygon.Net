@@ -7,7 +7,10 @@ namespace Polygon.Net
 {
     public partial class PolygonClient : IPolygonClient
     {
+        // /v1/meta/symbols/{stocksTicker}/company
         private const string TICKERS_ENDPOINT = "/vX/reference/tickers";
+        private string TICKERS_ENDPOINT_V1 = "/v1/meta/symbols";
+
 
         private const string EXCHANGES_ENDPOINT = "/v1/meta/exchanges";
 
@@ -32,7 +35,7 @@ namespace Polygon.Net
         {
             var queryParams = new Dictionary<string, string>
             {
-                { nameof(ticker), ticker },
+                { nameof(ticker), ticker?.ToUpper() },
                 { "ticker.lt", tickerlt },
                 { "ticker.lte", tickerlte },
                 { "ticker.gt", tickergt },
@@ -64,11 +67,11 @@ namespace Polygon.Net
             return JsonConvert.DeserializeObject<PolygonResponse<List<TickerInfo>>>(contentStr);
         }
 
-        public async Task<PolygonResponse<TickerDetailsInfo>> GetTickerDetailsAsync(string ticker, string date)
+        public async Task<PolygonResponse<TickerDetailsInfo>> GetTickerDetailsAsync(string ticker, string date = null)
         {
             CheckIsNotNullOrWhitespace(nameof(ticker), ticker);
 
-            var requestUrl = $"{ _polygonSettings.ApiBaseUrl }{ TICKERS_ENDPOINT }/{ ticker }";
+            var requestUrl = $"{ _polygonSettings.ApiBaseUrl }{ TICKERS_ENDPOINT }/{ ticker.ToUpper() }";
 
             if (date != null)
             {
@@ -78,6 +81,17 @@ namespace Polygon.Net
             var contentStr = await Get(requestUrl);
 
             return JsonConvert.DeserializeObject<PolygonResponse<TickerDetailsInfo>>(contentStr);
+        }
+        
+        public async Task<TickerDetailsInfoV1> GetTickerDetailsV1Async(string stocksTicker)
+        {
+            CheckIsNotNullOrWhitespace(nameof(stocksTicker), stocksTicker);
+
+            var requestUrl = $"{ _polygonSettings.ApiBaseUrl }{ TICKERS_ENDPOINT_V1 }/{ stocksTicker.ToUpper() }/company";
+
+            var contentStr = await Get(requestUrl);
+
+            return JsonConvert.DeserializeObject<TickerDetailsInfoV1>(contentStr);
         }
 
         public async Task<List<ExchangeInfo>> GetStockExchangesAsync()

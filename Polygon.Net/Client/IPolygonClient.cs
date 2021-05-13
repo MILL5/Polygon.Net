@@ -21,8 +21,10 @@ namespace Polygon.Net
             string order = null,
             int? limit = null,
             string nextUrl = null);
+        
+        public Task<TickerDetailsInfoV1> GetTickerDetailsV1Async(string stocksTicker);
 
-        public Task<PolygonResponse<TickerDetailsInfo>> GetTickerDetailsAsync(string ticker, string date);
+        public Task<PolygonResponse<TickerDetailsInfo>> GetTickerDetailsAsync(string ticker, string date = null);
 
         public Task<List<ExchangeInfo>> GetStockExchangesAsync();
 

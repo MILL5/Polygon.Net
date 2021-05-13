@@ -2,6 +2,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json;
 using System.Threading.Tasks;
 using static Polygon.Net.Tests.TestManager;
 
@@ -12,34 +13,35 @@ namespace Polygon.Net.Tests.FunctionalTests
     {
         private const string STATUS_OK = "OK";
 
-        [TestMethod]
-        public async Task GetTickerDetailsSucceedsAsync()
+        [DataTestMethod]
+        [DataRow("MSFT")]
+        [DataRow("msft")]
+        public async Task GetTickerDetailsSucceedsAsync(string microsoftTicker)
         {
-            var appleTicker = "AAPL";
-
-            var tickerDetailsResponse = await PolygonTestClient.GetTickerDetailsAsync(appleTicker, null);
+            var tickerDetailsResponse = await PolygonTestClient.GetTickerDetailsAsync(microsoftTicker);
 
             Assert.IsInstanceOfType(tickerDetailsResponse.Results, typeof(TickerDetailsInfo));
 
             Assert.IsNotNull(tickerDetailsResponse);
             Assert.AreEqual(STATUS_OK, tickerDetailsResponse.Status);
-            Assert.AreEqual(appleTicker, tickerDetailsResponse.Results.Ticker);
+            Assert.AreEqual(microsoftTicker.ToUpper(), tickerDetailsResponse.Results.Ticker);
             Assert.IsNotNull(tickerDetailsResponse.Results.PhoneNumber);
         }
 
-        [TestMethod]
-        public async Task GetTickerDetailsWithDateSucceedsAsync()
+        [DataTestMethod]
+        [DataRow("MSFT")]
+        [DataRow("msft")]
+        public async Task GetTickerDetailsWithDateSucceedsAsync(string microsoftTicker)
         {
-            var appleTicker = "AAPL";
-
-            var tickerDetailsResponse = await PolygonTestClient.GetTickerDetailsAsync(appleTicker, "2019-06-29");
+            var tickerDetailsResponse = await PolygonTestClient.GetTickerDetailsAsync(microsoftTicker, "2019-06-29");
 
             Assert.IsInstanceOfType(tickerDetailsResponse.Results, typeof(TickerDetailsInfo));
 
             Assert.IsNotNull(tickerDetailsResponse);
             Assert.AreEqual(STATUS_OK, tickerDetailsResponse.Status);
-            Assert.AreEqual(appleTicker, tickerDetailsResponse.Results.Ticker);
-            Assert.IsNotNull(tickerDetailsResponse.Results.PhoneNumber);
+            Assert.AreEqual(microsoftTicker.ToUpper(), tickerDetailsResponse.Results.Ticker);
+            // Assert.IsNotNull(tickerDetailsResponse.Results.PhoneNumber);
+            Assert.IsNotNull(tickerDetailsResponse.Results);
         }
 
         [TestMethod]
@@ -48,7 +50,7 @@ namespace Polygon.Net.Tests.FunctionalTests
             string ticker = null;
 
             await Assert.ThrowsExceptionAsync<ArgumentNullException>(
-                async () => await PolygonTestClient.GetTickerDetailsAsync(ticker, null));
+                async () => await PolygonTestClient.GetTickerDetailsAsync(ticker));
         }
 
         [TestMethod]
@@ -57,7 +59,7 @@ namespace Polygon.Net.Tests.FunctionalTests
             var ticker = string.Empty;
 
             await Assert.ThrowsExceptionAsync<ArgumentException>(
-                async () => await PolygonTestClient.GetTickerDetailsAsync(ticker, null));
+                async () => await PolygonTestClient.GetTickerDetailsAsync(ticker));
         }
 
         [TestMethod]
@@ -66,7 +68,7 @@ namespace Polygon.Net.Tests.FunctionalTests
             var ticker = Guid.NewGuid().ToString();
 
             await Assert.ThrowsExceptionAsync<PolygonHttpException>(
-                async () => await PolygonTestClient.GetTickerDetailsAsync(ticker, null));
+                async () => await PolygonTestClient.GetTickerDetailsAsync(ticker));
         }
 
         [TestMethod]
