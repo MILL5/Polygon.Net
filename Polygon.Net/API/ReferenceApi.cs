@@ -5,7 +5,7 @@ using static Pineapple.Common.Preconditions;
 
 namespace Polygon.Net
 {
-    public partial class PolygonClient : IPolygonClient
+    public partial class PolygonClient
     {
         private const string TICKERS_ENDPOINT = "/vX/reference/tickers";
         private string TICKERS_ENDPOINT_V1 = "/v1/meta/symbols";
@@ -42,7 +42,7 @@ namespace Polygon.Net
                 { nameof(market), market },
                 { nameof(exchange), exchange },
                 { nameof(cusip), cusip },
-                { nameof(date), date },
+                { nameof(date), FormatDateString(date) },
                 { nameof(active), active?.ToString() },
                 { nameof(sort), sort },
                 { nameof(order), order },
@@ -73,7 +73,7 @@ namespace Polygon.Net
 
             if (date != null)
             {
-                requestUrl += $"?date={ date }";
+                requestUrl += $"?date={ FormatDateString(date) }";
             }
 
             var contentStr = await Get(requestUrl);
