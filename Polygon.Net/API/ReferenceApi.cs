@@ -7,10 +7,8 @@ namespace Polygon.Net
 {
     public partial class PolygonClient : IPolygonClient
     {
-        // /v1/meta/symbols/{stocksTicker}/company
         private const string TICKERS_ENDPOINT = "/vX/reference/tickers";
         private string TICKERS_ENDPOINT_V1 = "/v1/meta/symbols";
-
 
         private const string EXCHANGES_ENDPOINT = "/v1/meta/exchanges";
 
