@@ -62,11 +62,23 @@ namespace Polygon.Net
 
         private string FormatDateString(string inputDateString)
         {
+            if (inputDateString == null)
+                return null;
+            
             DateTime outTime;
             var canParse = DateTime.TryParse(inputDateString, out outTime);
 
             if (!canParse)
-                throw new Exception("Invalid date string");
+            {
+                try
+                {
+                    outTime = DateTimeOffset.FromUnixTimeMilliseconds(Int64.Parse(inputDateString)).UtcDateTime;
+                }
+                catch
+                {
+                    throw new Exception("Invalid date input.");
+                }
+            }
 
             return outTime.ToString("yyyy-MM-dd");
         }

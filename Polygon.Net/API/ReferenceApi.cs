@@ -44,7 +44,7 @@ namespace Polygon.Net
                 { nameof(market), market },
                 { nameof(exchange), exchange },
                 { nameof(cusip), cusip },
-                { nameof(date), date },
+                { nameof(date), FormatDateString(date) },
                 { nameof(active), active?.ToString() },
                 { nameof(sort), sort },
                 { nameof(order), order },
@@ -75,7 +75,7 @@ namespace Polygon.Net
 
             if (date != null)
             {
-                requestUrl += $"?date={ date }";
+                requestUrl += $"?date={ FormatDateString(date) }";
             }
 
             var contentStr = await Get(requestUrl);

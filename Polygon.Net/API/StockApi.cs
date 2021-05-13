@@ -23,6 +23,16 @@ namespace Polygon.Net
            string sort = null,
            int? limit = null)
        {
+           CheckIsNotNullOrWhitespace(nameof(stocksTicker), stocksTicker);
+           CheckIsNotNullOrWhitespace(nameof(timespan), timespan);
+           CheckIsNotNullOrWhitespace(nameof(from), from);
+           CheckIsNotNullOrWhitespace(nameof(to), to);
+           CheckIsNotLessThan(nameof(multiplier), multiplier, 1);
+
+           var formattedFrom = FormatDateString(from);
+           var formattedTo = FormatDateString(to);
+           CheckIsValidDateRange(nameof(from), DateTime.Parse(formattedFrom), DateTime.Parse(formattedFrom), DateTime.Parse(formattedTo));
+
            var queryParams = new Dictionary<string, string>
            {
                {nameof(unadjusted), unadjusted?.ToString()},
@@ -32,7 +42,7 @@ namespace Polygon.Net
            
            var requestUrl = 
                $"{ _polygonSettings.ApiBaseUrl }" +
-               $"{ string.Format(STOCKS_AGGREGATES_BARS_ENDPOINT, stocksTicker.ToUpper(), multiplier.ToString(), timespan.ToLower(), FormatDateString(from), FormatDateString(to)) }" +
+               $"{ string.Format(STOCKS_AGGREGATES_BARS_ENDPOINT, stocksTicker.ToUpper(), multiplier.ToString(), timespan.ToLower(), formattedFrom, formattedTo) }" +
                $"{ GetQueryParameterString(queryParams) }";
 
            var contentStr = await Get(requestUrl);
