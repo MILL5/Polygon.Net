@@ -29,16 +29,16 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Solution Items\" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Include="..\.gitignore" Link="Solution Items\.gitignore" />
-    <None Include="..\Polygon.Net.runsettings" Link="Solution Items\Polygon.Net.runsettings" />
+    <None Include="..\.gitignore" Link="_Solution Items\.gitignore" />
+    <None Include="..\Polygon.Net.runsettings" Link="_Solution Items\Polygon.Net.runsettings" />
     <None Include="polygon.png">
       <Pack>True</Pack>
       <PackagePath></PackagePath>
     </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="_Solution Items\" />
   </ItemGroup>
 
 </Project>
