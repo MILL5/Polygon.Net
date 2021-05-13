@@ -21,7 +21,7 @@ namespace Polygon.Net
             string order = null,
             int? limit = null,
             string nextUrl = null);
-        
+
         public Task<TickerDetailsInfoV1> GetTickerDetailsV1Async(string stocksTicker);
 
         public Task<PolygonResponse<TickerDetailsInfo>> GetTickerDetailsAsync(string ticker, string date = null);
@@ -34,5 +34,15 @@ namespace Polygon.Net
             string sort = null,
             int? limit = null,
             string nextUrl = null);
+
+        public Task<AggregatesBars> GetAggregatesAsync(
+            string stocksTicker,
+            int multiplier,
+            string timespan,
+            string from,
+            string to,
+            bool? unadjusted = null,
+            string sort = null,
+            int? limit = null);
     }
 }

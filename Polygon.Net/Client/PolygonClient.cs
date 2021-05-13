@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
@@ -57,6 +58,17 @@ namespace Polygon.Net
             sb.Insert(0, "?");
 
             return sb.ToString();
+        }
+
+        private string FormatDateString(string inputDateString)
+        {
+            DateTime outTime;
+            var canParse = DateTime.TryParse(inputDateString, out outTime);
+
+            if (!canParse)
+                throw new Exception("Invalid date string");
+
+            return outTime.ToString("yyyy-MM-dd");
         }
     }
 }

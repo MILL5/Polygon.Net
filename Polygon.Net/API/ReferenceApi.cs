@@ -5,7 +5,7 @@ using static Pineapple.Common.Preconditions;
 
 namespace Polygon.Net
 {
-    public partial class PolygonClient : IPolygonClient
+    public partial class PolygonClient
     {
         // /v1/meta/symbols/{stocksTicker}/company
         private const string TICKERS_ENDPOINT = "/vX/reference/tickers";
