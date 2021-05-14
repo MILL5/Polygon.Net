@@ -8,20 +8,29 @@ namespace Polygon.Net.Tests.FunctionalTests
     [TestClass]
     public class TickerDetailsV1Tests
     {
-        [DataTestMethod]
-        [DataRow("MSFT")]
-        [DataRow("msft")]
-        public async Task GetTickerDetailsV1SucceedsAsync(string microsoftTicker)
+        private const string STATUS_OK = "OK";
+
+        private const string TICKER_MSFT = "MSFT";
+
+        [TestMethod]
+        public async Task GetTickerDetailsV1SucceedsAsync()
         {
-            var tickerDetailsV1 = await PolygonTestClient.GetTickerDetailsV1Async(microsoftTicker);
+            var tickerDetailsV1 = await PolygonTestClient.GetTickerDetailsV1Async(TICKER_MSFT);
 
             Assert.IsInstanceOfType(tickerDetailsV1, typeof(TickerDetailsInfoV1));
 
             Assert.IsNotNull(tickerDetailsV1);
-            Assert.AreEqual(microsoftTicker.ToUpper(), tickerDetailsV1.Symbol);
+            Assert.AreEqual(TICKER_MSFT, tickerDetailsV1.Symbol);
             Assert.IsNotNull(tickerDetailsV1.Phone);
         }
-        
+
+        [TestMethod]
+        public async Task GetTickerDetailsLowerCaseTickerAsync()
+        {
+            await Assert.ThrowsExceptionAsync<PolygonHttpException>(
+                async () => await PolygonTestClient.GetTickerDetailsV1Async("msft"));
+        }
+
         [TestMethod]
         public async Task GetTickerDetailsNullTickerAsync()
         {

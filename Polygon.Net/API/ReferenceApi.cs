@@ -33,7 +33,7 @@ namespace Polygon.Net
         {
             var queryParams = new Dictionary<string, string>
             {
-                { nameof(ticker), ticker?.ToUpper() },
+                { nameof(ticker), ticker },
                 { "ticker.lt", tickerlt },
                 { "ticker.lte", tickerlte },
                 { "ticker.gt", tickergt },
@@ -69,7 +69,7 @@ namespace Polygon.Net
         {
             CheckIsNotNullOrWhitespace(nameof(ticker), ticker);
 
-            var requestUrl = $"{ _polygonSettings.ApiBaseUrl }{ TICKERS_ENDPOINT }/{ ticker.ToUpper() }";
+            var requestUrl = $"{ _polygonSettings.ApiBaseUrl }{ TICKERS_ENDPOINT }/{ ticker }";
 
             if (date != null)
             {
@@ -85,7 +85,7 @@ namespace Polygon.Net
         {
             CheckIsNotNullOrWhitespace(nameof(stocksTicker), stocksTicker);
 
-            var requestUrl = $"{ _polygonSettings.ApiBaseUrl }{ TICKERS_ENDPOINT_V1 }/{ stocksTicker.ToUpper() }/company";
+            var requestUrl = $"{ _polygonSettings.ApiBaseUrl }{ TICKERS_ENDPOINT_V1 }/{ stocksTicker }/company";
 
             var contentStr = await Get(requestUrl);
 
