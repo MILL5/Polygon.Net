@@ -2,9 +2,9 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.1</TargetFramework>
-	<Version>1.0.2-alpha</Version>
-	<AssemblyVersion>1.0.2.0</AssemblyVersion>
-	<FileVersion>1.0.2.0</FileVersion>
+	<Version>1.0.3-alpha</Version>
+	<AssemblyVersion>1.0.3.0</AssemblyVersion>
+	<FileVersion>1.0.3.0</FileVersion>
     <Authors>MILL5</Authors>
     <Description>A .NET class library for use against the Polygon APIs supporting .NET Standard, .NET Core, and the new .NET 5.0</Description>
     <Copyright>Copyright © MILL5, LLC 2021</Copyright>
