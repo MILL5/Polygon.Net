@@ -42,7 +42,7 @@ namespace Polygon.Net
            
            var requestUrl = 
                $"{ _polygonSettings.ApiBaseUrl }" +
-               $"{ string.Format(STOCKS_AGGREGATES_BARS_ENDPOINT, stocksTicker.ToUpper(), multiplier.ToString(), timespan.ToLower(), formattedFrom, formattedTo) }" +
+               $"{ string.Format(STOCKS_AGGREGATES_BARS_ENDPOINT, stocksTicker, multiplier.ToString(), timespan.ToLower(), formattedFrom, formattedTo) }" +
                $"{ GetQueryParameterString(queryParams) }";
 
            var contentStr = await Get(requestUrl);

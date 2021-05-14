@@ -1,5 +1,4 @@
 using System;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using static Polygon.Net.Tests.TestManager;
@@ -9,6 +8,8 @@ namespace Polygon.Net.Tests.FunctionalTests
     [TestClass]
     public class StockApiTests
     {
+        private const string STATUS_OK = "OK";
+
         // Valid Strings
         private const string MSFT_TICKER = "MSFT";
         private const string MSFT_LOWER_TICKER = "msft";
@@ -27,7 +28,6 @@ namespace Polygon.Net.Tests.FunctionalTests
         // Tests for requests without query params
         [DataTestMethod]
         [DataRow(MSFT_TICKER, MULTIPLIER, TIMESPAN_DAY, FROM_STRING, TO_STRING)]
-        [DataRow(MSFT_LOWER_TICKER, MULTIPLIER, TIMESPAN_DAY, FROM_STRING, TO_STRING)]
         [DataRow(MSFT_TICKER, MULTIPLIER, TIMESPAN_DAY, FROM_STRING_MM_DD_YYYY, TO_STRING)]
         [DataRow(MSFT_TICKER, MULTIPLIER, TIMESPAN_DAY, FROM_STRING, TO_STRING_MM_DD_YYYY)]
         [DataRow(MSFT_TICKER, MULTIPLIER, TIMESPAN_DAY, FROM_STRING_MM_DD_YYYY, TO_STRING_MM_DD_YYYY)]
@@ -39,11 +39,22 @@ namespace Polygon.Net.Tests.FunctionalTests
             var response = await PolygonTestClient.GetAggregatesAsync(ticker, multiplier, timespan, from, to);
 
             Assert.IsNotNull(response);
-            Assert.AreEqual("OK", response.Status);
+            Assert.AreEqual(STATUS_OK, response.Status);
             Assert.IsTrue(response.Results.Count >= 1);
-            Assert.AreEqual(response.Ticker, ticker.ToUpper());
+            Assert.AreEqual(response.Ticker, ticker);
         }
-        
+
+        [TestMethod]
+        public async Task GetAggregatesLowerCaseTickerAsync()
+        {
+            var response = await PolygonTestClient.GetAggregatesAsync(MSFT_LOWER_TICKER, MULTIPLIER, TIMESPAN_DAY, FROM_STRING, TO_STRING);
+
+            Assert.IsNotNull(response);
+            Assert.AreEqual(STATUS_OK, response.Status);
+            Assert.IsTrue(response.ResultsCount == 0);
+            Assert.AreEqual(MSFT_LOWER_TICKER, response.Ticker);
+        }
+
         [DataTestMethod]
         [DataRow(true, null, null)]
         [DataRow(null, "asc", null)]
@@ -63,7 +74,7 @@ namespace Polygon.Net.Tests.FunctionalTests
             );
 
             Assert.IsNotNull(response);
-            Assert.AreEqual("OK", response.Status);
+            Assert.AreEqual(STATUS_OK, response.Status);
             Assert.IsTrue(response.Results.Count >= 1);
             Assert.AreEqual(response.Ticker, MSFT_TICKER);
         }

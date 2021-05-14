@@ -13,34 +13,38 @@ namespace Polygon.Net.Tests.FunctionalTests
     {
         private const string STATUS_OK = "OK";
 
-        [DataTestMethod]
-        [DataRow("MSFT")]
-        [DataRow("msft")]
-        public async Task GetTickerDetailsSucceedsAsync(string microsoftTicker)
+        private const string TICKER_MSFT = "MSFT";
+
+        [TestMethod]
+        public async Task GetTickerDetailsSucceedsAsync()
         {
-            var tickerDetailsResponse = await PolygonTestClient.GetTickerDetailsAsync(microsoftTicker);
+            var tickerDetailsResponse = await PolygonTestClient.GetTickerDetailsAsync(TICKER_MSFT);
 
             Assert.IsInstanceOfType(tickerDetailsResponse.Results, typeof(TickerDetailsInfo));
 
             Assert.IsNotNull(tickerDetailsResponse);
             Assert.AreEqual(STATUS_OK, tickerDetailsResponse.Status);
-            Assert.AreEqual(microsoftTicker.ToUpper(), tickerDetailsResponse.Results.Ticker);
+            Assert.AreEqual(TICKER_MSFT, tickerDetailsResponse.Results.Ticker);
             Assert.IsNotNull(tickerDetailsResponse.Results.PhoneNumber);
         }
 
-        [DataTestMethod]
-        [DataRow("MSFT")]
-        [DataRow("msft")]
-        public async Task GetTickerDetailsWithDateSucceedsAsync(string microsoftTicker)
+        [TestMethod]
+        public async Task GetTickerDetailsLowerCaseTickerAsync()
         {
-            var tickerDetailsResponse = await PolygonTestClient.GetTickerDetailsAsync(microsoftTicker, "2019-06-29");
+            await Assert.ThrowsExceptionAsync<PolygonHttpException>(
+                async () => await PolygonTestClient.GetTickerDetailsAsync("msft"));
+        }
+
+        [TestMethod]
+        public async Task GetTickerDetailsWithDateSucceedsAsync()
+        {
+            var tickerDetailsResponse = await PolygonTestClient.GetTickerDetailsAsync(TICKER_MSFT, "2019-06-29");
 
             Assert.IsInstanceOfType(tickerDetailsResponse.Results, typeof(TickerDetailsInfo));
 
             Assert.IsNotNull(tickerDetailsResponse);
             Assert.AreEqual(STATUS_OK, tickerDetailsResponse.Status);
-            Assert.AreEqual(microsoftTicker.ToUpper(), tickerDetailsResponse.Results.Ticker);
-            // Assert.IsNotNull(tickerDetailsResponse.Results.PhoneNumber);
+            Assert.AreEqual(TICKER_MSFT, tickerDetailsResponse.Results.Ticker);
             Assert.IsNotNull(tickerDetailsResponse.Results);
         }
 
