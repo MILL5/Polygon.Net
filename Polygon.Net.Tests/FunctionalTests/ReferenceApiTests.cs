@@ -29,6 +29,18 @@ namespace Polygon.Net.Tests.FunctionalTests
         }
 
         [TestMethod]
+        public async Task GetTickerDetailsV1NoCikTickerSucceedsAsync()
+        {
+            var tickerDetailsResponse = await PolygonTestClient.GetTickerDetailsAsync("AAXJ");
+
+            Assert.IsInstanceOfType(tickerDetailsResponse.Results, typeof(TickerDetailsInfo));
+
+            Assert.IsNotNull(tickerDetailsResponse);
+            Assert.AreEqual("AAXJ", tickerDetailsResponse.Results.Ticker);
+            Assert.IsNull(tickerDetailsResponse.Results.Cik);
+        }
+
+        [TestMethod]
         public async Task GetTickerDetailsLowerCaseTickerAsync()
         {
             await Assert.ThrowsExceptionAsync<PolygonHttpException>(

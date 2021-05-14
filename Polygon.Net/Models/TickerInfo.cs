@@ -24,7 +24,7 @@ namespace Polygon.Net
         public string Type { get; set; }
 
         [JsonProperty("active")]
-        public bool Active { get; set; }
+        public bool? Active { get; set; }
 
         [JsonProperty("currency_name")]
         public string CurrencyName { get; set; }

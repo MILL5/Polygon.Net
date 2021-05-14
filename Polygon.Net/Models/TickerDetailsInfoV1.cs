@@ -12,7 +12,7 @@ namespace Polygon.Net
         public DateTimeOffset Listdate { get; set; }
 
         [JsonProperty("cik")]
-        public long Cik { get; set; }
+        public long? Cik { get; set; }
 
         [JsonProperty("bloomberg")]
         public string Bloomberg { get; set; }
@@ -24,7 +24,7 @@ namespace Polygon.Net
         public string Lei { get; set; }
 
         [JsonProperty("sic")]
-        public long Sic { get; set; }
+        public long? Sic { get; set; }
 
         [JsonProperty("country")]
         public string Country { get; set; }
@@ -36,10 +36,10 @@ namespace Polygon.Net
         public string Sector { get; set; }
 
         [JsonProperty("marketcap")]
-        public long Marketcap { get; set; }
+        public long? Marketcap { get; set; }
 
         [JsonProperty("employees")]
-        public long Employees { get; set; }
+        public long? Employees { get; set; }
 
         [JsonProperty("phone")]
         public string Phone { get; set; }

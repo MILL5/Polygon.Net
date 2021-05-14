@@ -5,10 +5,10 @@ namespace Polygon.Net
     public class TickerDetailsInfo : TickerInfo
     {
         [JsonProperty("outstanding_shares")]
-        public long OutstandingShares { get; set; }
+        public long? OutstandingShares { get; set; }
 
         [JsonProperty("market_cap")]
-        public long MarketCap { get; set; }
+        public long? MarketCap { get; set; }
 
         [JsonProperty("phone_number")]
         public string PhoneNumber { get; set; }
