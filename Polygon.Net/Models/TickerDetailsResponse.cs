@@ -1,8 +1,9 @@
 ﻿using Newtonsoft.Json;
+using System.Collections.Generic;
 
 namespace Polygon.Net
 {
-    public class PolygonResponse<T>
+    public class TickerDetailsResponse
     {
         [JsonProperty("status")]
         public string Status { get; set; }
@@ -13,10 +14,7 @@ namespace Polygon.Net
         [JsonProperty("count")]
         public int Count { get; set; }
 
-        [JsonProperty("next_url")]
-        public string NextUrl { get; set; }
-
         [JsonProperty("results")]
-        public T Results { get; set; }
+        public TickerDetailsInfo Results { get; set; }
     }
 }

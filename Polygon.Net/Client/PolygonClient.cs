@@ -64,11 +64,10 @@ namespace Polygon.Net
         {
             if (inputDateString == null)
                 return null;
-            
-            DateTime outTime;
-            var canParse = DateTime.TryParse(inputDateString, out outTime);
 
-            if (!canParse)
+            var dateIsParsed = DateTime.TryParse(inputDateString, out DateTime outTime);
+
+            if (!dateIsParsed)
             {
                 try
                 {

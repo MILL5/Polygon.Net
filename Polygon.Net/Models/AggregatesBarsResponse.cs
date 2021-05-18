@@ -3,7 +3,7 @@ using Newtonsoft.Json;
 
 namespace Polygon.Net
 {
-    public class AggregatesBars
+    public class AggregatesBarsResponse
     {
             [JsonProperty("ticker")]
             public string Ticker { get; set; }

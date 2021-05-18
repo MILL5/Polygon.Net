@@ -5,7 +5,7 @@ namespace Polygon.Net
 {
     public interface IPolygonClient
     {
-        public Task<PolygonResponse<List<TickerInfo>>> GetTickersAsync(
+        public Task<TickersResponse> GetTickersAsync(
             string ticker = null,
             string tickerlt = null,
             string tickerlte = null,
@@ -24,18 +24,18 @@ namespace Polygon.Net
 
         public Task<TickerDetailsInfoV1> GetTickerDetailsV1Async(string stocksTicker);
 
-        public Task<PolygonResponse<TickerDetailsInfo>> GetTickerDetailsAsync(string ticker, string date = null);
+        public Task<TickerDetailsResponse> GetTickerDetailsAsync(string ticker, string date = null);
 
         public Task<List<ExchangeInfo>> GetStockExchangesAsync();
 
-        public Task<PolygonResponse<List<StockFinancialInfo>>> GetStockFinancialsAsync(
+        public Task<StockFinancialsResponse> GetStockFinancialsAsync(
             string stocksTicker,
             string type = null,
             string sort = null,
             int? limit = null,
             string nextUrl = null);
 
-        public Task<AggregatesBars> GetAggregatesAsync(
+        public Task<AggregatesBarsResponse> GetAggregatesAsync(
             string stocksTicker,
             int multiplier,
             string timespan,

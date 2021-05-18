@@ -21,9 +21,6 @@ namespace Polygon.Net.Tests.FunctionalTests
         private const string TO_STRING_MM_DD_YYYY = "10-20-2020";
         private const string FROM_UNIX = "1602648000000";
         private const string TO_UNIX = "1603166400000";
-        
-        // Invalid Strings
-        private const string FOOBAR = "foobar";
 
         // Tests for requests without query params
         [DataTestMethod]

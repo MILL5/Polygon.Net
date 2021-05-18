@@ -8,8 +8,6 @@ namespace Polygon.Net.Tests.FunctionalTests
     [TestClass]
     public class TickerDetailsV1Tests
     {
-        private const string STATUS_OK = "OK";
-
         private const string TICKER_MSFT = "MSFT";
 
         [TestMethod]

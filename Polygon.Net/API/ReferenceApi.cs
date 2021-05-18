@@ -8,13 +8,14 @@ namespace Polygon.Net
     public partial class PolygonClient
     {
         private const string TICKERS_ENDPOINT = "/vX/reference/tickers";
-        private string TICKERS_ENDPOINT_V1 = "/v1/meta/symbols";
+
+        private const string TICKERS_ENDPOINT_V1 = "/v1/meta/symbols";
 
         private const string EXCHANGES_ENDPOINT = "/v1/meta/exchanges";
 
         private const string FINANCIALS_ENDPOINT = "/v2/reference/financials";
 
-        public async Task<PolygonResponse<List<TickerInfo>>> GetTickersAsync(
+        public async Task<TickersResponse> GetTickersAsync(
             string ticker = null,
             string tickerlt = null,
             string tickerlte = null,
@@ -62,10 +63,10 @@ namespace Polygon.Net
             
             var contentStr = await Get(requestUrl);
 
-            return JsonConvert.DeserializeObject<PolygonResponse<List<TickerInfo>>>(contentStr);
+            return JsonConvert.DeserializeObject<TickersResponse>(contentStr);
         }
 
-        public async Task<PolygonResponse<TickerDetailsInfo>> GetTickerDetailsAsync(string ticker, string date = null)
+        public async Task<TickerDetailsResponse> GetTickerDetailsAsync(string ticker, string date = null)
         {
             CheckIsNotNullOrWhitespace(nameof(ticker), ticker);
 
@@ -78,7 +79,7 @@ namespace Polygon.Net
 
             var contentStr = await Get(requestUrl);
 
-            return JsonConvert.DeserializeObject<PolygonResponse<TickerDetailsInfo>>(contentStr);
+            return JsonConvert.DeserializeObject<TickerDetailsResponse>(contentStr);
         }
         
         public async Task<TickerDetailsInfoV1> GetTickerDetailsV1Async(string stocksTicker)
@@ -101,7 +102,7 @@ namespace Polygon.Net
             return JsonConvert.DeserializeObject<List<ExchangeInfo>>(contentStr);
         }
 
-        public async Task<PolygonResponse<List<StockFinancialInfo>>> GetStockFinancialsAsync(
+        public async Task<StockFinancialsResponse> GetStockFinancialsAsync(
             string stocksTicker,
             string type = null,
             string sort = null,
@@ -130,7 +131,7 @@ namespace Polygon.Net
 
             var contentStr = await Get(requestUrl);
 
-            return JsonConvert.DeserializeObject<PolygonResponse<List<StockFinancialInfo>>>(contentStr);
+            return JsonConvert.DeserializeObject<StockFinancialsResponse>(contentStr);
         }
     }
 }
