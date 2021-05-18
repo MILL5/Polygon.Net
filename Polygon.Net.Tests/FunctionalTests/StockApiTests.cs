@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using static Polygon.Net.Tests.TestManager;
@@ -36,9 +37,13 @@ namespace Polygon.Net.Tests.FunctionalTests
             var response = await PolygonTestClient.GetAggregatesAsync(ticker, multiplier, timespan, from, to);
 
             Assert.IsNotNull(response);
+            AssertAllPropertiesNotNull(response);
+
             Assert.AreEqual(STATUS_OK, response.Status);
             Assert.IsTrue(response.Results.Count >= 1);
             Assert.AreEqual(response.Ticker, ticker);
+
+            AssertAllPropertiesNotNull(response.Results.FirstOrDefault());
         }
 
         [TestMethod]
@@ -104,6 +109,42 @@ namespace Polygon.Net.Tests.FunctionalTests
         {
             await Assert.ThrowsExceptionAsync<ArgumentOutOfRangeException>(
                 async () => await PolygonTestClient.GetAggregatesAsync(MSFT_TICKER, MULTIPLIER, TIMESPAN_DAY, from, to));
+        }
+
+        [DataTestMethod]
+        [DataRow(null)]
+        [DataRow(true)]
+        [DataRow(false)]
+        public async Task GetDailyOpenCloseSucceedsAsync(bool? unadjusted)
+        {
+            var response = await PolygonTestClient.GetDailyOpenCloseAsync(MSFT_TICKER, FROM_STRING, unadjusted);
+
+            Assert.IsNotNull(response);
+            Assert.IsInstanceOfType(response, typeof(DailyOpenCloseResponse));
+
+            Assert.AreEqual(STATUS_OK, response.Status);
+
+            AssertAllPropertiesNotNull(response);
+        }
+
+        [DataTestMethod]
+        [DataRow(null, FROM_STRING, null)]
+        [DataRow(MSFT_TICKER, null, null)]
+        [DataRow(null, null, null)]
+        [DataRow(null, FROM_STRING, true)]
+        [DataRow(MSFT_TICKER, null, true)]
+        [DataRow(null, null, true)]
+        public async Task GetDailyOpenCloseNullRouteParamsAsync(string stocksTicker, string date, bool? unadjusted)
+        {
+            await Assert.ThrowsExceptionAsync<ArgumentNullException>(
+                async () => await PolygonTestClient.GetDailyOpenCloseAsync(stocksTicker, date, unadjusted));
+        }
+
+        [TestMethod]
+        public async Task GetDailyOpenCloseInvalidDateAsync()
+        {
+            await Assert.ThrowsExceptionAsync<Exception>(
+                async () => await PolygonTestClient.GetDailyOpenCloseAsync(MSFT_TICKER, "foobar"));
         }
     }
 }

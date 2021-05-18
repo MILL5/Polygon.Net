@@ -53,5 +53,20 @@ namespace Polygon.Net.Tests
         {
 
         }
+
+        public static void AssertAllPropertiesNotNull<T>(T obj)
+        {
+            foreach(var prop in obj.GetType().GetProperties())
+            {
+                var value = prop.GetValue(obj);
+
+                Assert.IsNotNull(value);
+
+                if (value.GetType() == typeof(string))
+                {
+                    Assert.AreNotEqual(string.Empty, value);
+                }
+            }
+        }
     }
 }

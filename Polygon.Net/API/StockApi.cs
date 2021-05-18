@@ -8,12 +8,13 @@ namespace Polygon.Net
 {
     public partial class PolygonClient
     {
-        // TODO Catch format date exception
-       //v2/aggs/ticker/{stocksTicker}/range/{multiplier}/{timespan}/{from}/{to}
-       private readonly string STOCKS_AGGREGATES_BARS_ENDPOINT =
+        private const string AGGREGATES_BARS_ENDPOINT =
            "/v2/aggs/ticker/{0}/range/{1}/{2}/{3}/{4}";
 
-       public async Task<AggregatesBarsResponse> GetAggregatesAsync(
+        private const string DAILY_OPEN_CLOSE_ENDPOINT =
+           "/v1/open-close/{0}/{1}";
+
+        public async Task<AggregatesBarsResponse> GetAggregatesAsync(
            string stocksTicker, 
            int multiplier, 
            string timespan,
@@ -42,12 +43,37 @@ namespace Polygon.Net
            
            var requestUrl = 
                $"{ _polygonSettings.ApiBaseUrl }" +
-               $"{ string.Format(STOCKS_AGGREGATES_BARS_ENDPOINT, stocksTicker, multiplier.ToString(), timespan.ToLower(), formattedFrom, formattedTo) }" +
+               $"{ string.Format(AGGREGATES_BARS_ENDPOINT, stocksTicker, multiplier.ToString(), timespan.ToLower(), formattedFrom, formattedTo) }" +
                $"{ GetQueryParameterString(queryParams) }";
 
            var contentStr = await Get(requestUrl);
 
            return JsonConvert.DeserializeObject<AggregatesBarsResponse>(contentStr);
+        }
+
+        public async Task<DailyOpenCloseResponse> GetDailyOpenCloseAsync(
+           string stocksTicker,
+           string date,
+           bool? unadjusted = null)
+        {
+            CheckIsNotNullOrWhitespace(nameof(stocksTicker), stocksTicker);
+            CheckIsNotNullOrWhitespace(nameof(date), date);
+
+            var formattedDate = FormatDateString(date);
+
+            var queryParams = new Dictionary<string, string>
+            {
+                {nameof(unadjusted), unadjusted?.ToString()},
+            };
+
+            var requestUrl =
+                $"{ _polygonSettings.ApiBaseUrl }" +
+                $"{ string.Format(DAILY_OPEN_CLOSE_ENDPOINT, stocksTicker, formattedDate) }" +
+                $"{ GetQueryParameterString(queryParams) }";
+
+            var contentStr = await Get(requestUrl);
+
+            return JsonConvert.DeserializeObject<DailyOpenCloseResponse>(contentStr);
        }
     }
 }

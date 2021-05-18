@@ -44,5 +44,8 @@ namespace Polygon.Net
             bool? unadjusted = null,
             string sort = null,
             int? limit = null);
+
+
+        public Task<DailyOpenCloseResponse> GetDailyOpenCloseAsync(string stocksTicker, string date, bool? unadjusted = null);
     }
 }
