@@ -5,7 +5,7 @@ namespace Polygon.Net
 {
     public class TickerDetailsInfoV1
     {
-                [JsonProperty("logo")]
+        [JsonProperty("logo")]
         public Uri Logo { get; set; }
 
         [JsonProperty("listdate")]
