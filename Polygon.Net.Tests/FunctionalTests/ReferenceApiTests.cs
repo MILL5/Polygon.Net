@@ -189,7 +189,7 @@ namespace Polygon.Net.Tests.FunctionalTests
                     limit: limitParam
                 );
 
-            Assert.IsInstanceOfType(stockFinancialsRepsonse, typeof(PolygonResponse<List<StockFinancialInfo>>));
+            Assert.IsInstanceOfType(stockFinancialsRepsonse, typeof(StockFinancialsResponse));
 
             Assert.IsNotNull(stockFinancialsRepsonse);
             Assert.AreEqual(STATUS_OK, stockFinancialsRepsonse.Status);

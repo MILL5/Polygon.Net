@@ -13,7 +13,7 @@ namespace Polygon.Net
        private readonly string STOCKS_AGGREGATES_BARS_ENDPOINT =
            "/v2/aggs/ticker/{0}/range/{1}/{2}/{3}/{4}";
 
-       public async Task<AggregatesBars> GetAggregatesAsync(
+       public async Task<AggregatesBarsResponse> GetAggregatesAsync(
            string stocksTicker, 
            int multiplier, 
            string timespan,
@@ -47,7 +47,7 @@ namespace Polygon.Net
 
            var contentStr = await Get(requestUrl);
 
-           return JsonConvert.DeserializeObject<AggregatesBars>(contentStr);
+           return JsonConvert.DeserializeObject<AggregatesBarsResponse>(contentStr);
        }
     }
 }
