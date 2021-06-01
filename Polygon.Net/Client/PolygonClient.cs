@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using AutoMapper;
 using static Pineapple.Common.Preconditions;
 
 namespace Polygon.Net
@@ -11,12 +12,14 @@ namespace Polygon.Net
     {
         private readonly IPolygonDependencies _dependencies;
         public readonly PolygonSettings _polygonSettings;
+        public readonly IMapper _mapper;
 
         public PolygonClient(IPolygonDependencies dependencies)
         {
             CheckIsNotNull(nameof(dependencies), dependencies);
             _dependencies = dependencies;
             _polygonSettings = dependencies.Settings;
+            _mapper = dependencies.Mapper;
         }
 
         private async Task<string> Get(string requestUrl)

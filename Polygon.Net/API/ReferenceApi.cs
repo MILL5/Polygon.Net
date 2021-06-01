@@ -29,7 +29,8 @@ namespace Polygon.Net
             string sort = null,
             string order = null,
             int? limit = null,
-            string nextUrl = null)
+            string nextUrl = null, 
+            bool expandAbbreviations = false)
         {
             var queryParams = new Dictionary<string, string>
             {
@@ -62,10 +63,12 @@ namespace Polygon.Net
             
             var contentStr = await Get(requestUrl);
 
-            return JsonConvert.DeserializeObject<TickersResponse>(contentStr);
+            var tickers = JsonConvert.DeserializeObject<TickersResponse>(contentStr);
+            
+            return expandAbbreviations ? _mapper.Map<TickersResponse>(tickers) : tickers;
         }
 
-        public async Task<TickerDetailsResponse> GetTickerDetailsAsync(string ticker, string date = null)
+        public async Task<TickerDetailsResponse> GetTickerDetailsAsync(string ticker, string date = null, bool expandAbbreviations = false)
         {
             CheckIsNotNullOrWhitespace(nameof(ticker), ticker);
 
@@ -78,10 +81,15 @@ namespace Polygon.Net
 
             var contentStr = await Get(requestUrl);
 
-            return JsonConvert.DeserializeObject<TickerDetailsResponse>(contentStr);
+            var details = JsonConvert.DeserializeObject<TickerDetailsResponse>(contentStr);
+
+            if (details != null && expandAbbreviations)
+                details.Results = _mapper.Map<TickerDetailsInfo>(details.Results);
+
+            return expandAbbreviations ? _mapper.Map<TickerDetailsResponse>(details) : details;
         }
         
-        public async Task<TickerDetailsInfoV1> GetTickerDetailsV1Async(string stocksTicker)
+        public async Task<TickerDetailsInfoV1> GetTickerDetailsV1Async(string stocksTicker, bool expandAbbreviations = false)
         {
             CheckIsNotNullOrWhitespace(nameof(stocksTicker), stocksTicker);
 
@@ -89,7 +97,9 @@ namespace Polygon.Net
 
             var contentStr = await Get(requestUrl);
 
-            return JsonConvert.DeserializeObject<TickerDetailsInfoV1>(contentStr);
+            var details = JsonConvert.DeserializeObject<TickerDetailsInfoV1>(contentStr);
+
+            return expandAbbreviations ? _mapper.Map<TickerDetailsInfoV1>(details) : details;
         }
 
         public async Task<List<ExchangeInfo>> GetStockExchangesAsync()

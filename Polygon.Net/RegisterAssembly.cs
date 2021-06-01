@@ -30,6 +30,8 @@ namespace Polygon.Net
             services.AddTransient<IPolygonDependencies, PolygonDependencies>();
             services.AddTransient<IPolygonClient, PolygonClient>();
 
+            services.AddAutoMapper(typeof(RegisterAssembly));
+
             AddHttpClient(services, settings);
         }
 

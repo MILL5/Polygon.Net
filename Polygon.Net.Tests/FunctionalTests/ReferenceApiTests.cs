@@ -14,6 +14,7 @@ namespace Polygon.Net.Tests.FunctionalTests
         private const string STATUS_OK = "OK";
 
         private const string TICKER_MSFT = "MSFT";
+        private const string TICKER_AAPL = "AAPL";
 
         [TestMethod]
         public async Task GetTickerDetailsSucceedsAsync()
@@ -25,6 +26,20 @@ namespace Polygon.Net.Tests.FunctionalTests
             Assert.IsNotNull(tickerDetailsResponse);
             Assert.AreEqual(STATUS_OK, tickerDetailsResponse.Status);
             Assert.AreEqual(TICKER_MSFT, tickerDetailsResponse.Results.Ticker);
+            Assert.IsNotNull(tickerDetailsResponse.Results.PhoneNumber);
+        }
+        
+        [TestMethod]
+        public async Task GetTickerDetailsWithExpansionSucceedsAsync()
+        {
+            var tickerDetailsResponse = await PolygonTestClient.GetTickerDetailsAsync(TICKER_AAPL, expandAbbreviations: true);
+
+            Assert.IsInstanceOfType(tickerDetailsResponse.Results, typeof(TickerDetailsInfo));
+
+            Assert.IsNotNull(tickerDetailsResponse);
+            Assert.AreEqual(STATUS_OK, tickerDetailsResponse.Status);
+            Assert.AreEqual(TICKER_AAPL, tickerDetailsResponse.Results.Ticker);
+            Assert.IsTrue(tickerDetailsResponse.Results.Name.Contains("Incorporated"));
             Assert.IsNotNull(tickerDetailsResponse.Results.PhoneNumber);
         }
 
@@ -97,6 +112,22 @@ namespace Polygon.Net.Tests.FunctionalTests
             Assert.IsNotNull(tickersRepsonse);
             Assert.AreEqual(STATUS_OK, tickersRepsonse.Status);
             Assert.IsTrue(tickersRepsonse.Results.Any());
+        }
+        
+        [TestMethod]
+        public async Task GetTickersWithExpansionSucceedsAsync()
+        {
+            var tickersRepsonse = await PolygonTestClient.GetTickersAsync(expandAbbreviations: true);
+
+            Assert.IsInstanceOfType(tickersRepsonse.Results, typeof(List<TickerInfo>));
+
+            Assert.IsNotNull(tickersRepsonse);
+            Assert.AreEqual(STATUS_OK, tickersRepsonse.Status);
+            Assert.IsTrue(tickersRepsonse.Results.Any());
+
+            var aaplTicker = tickersRepsonse.Results.First(x => x.Ticker == TICKER_AAPL);
+            
+            Assert.IsTrue(aaplTicker.Name.Contains("Incorporated"));
         }
 
         [TestMethod]

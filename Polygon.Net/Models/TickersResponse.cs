@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using System.Collections;
+using Newtonsoft.Json;
 using System.Collections.Generic;
 
 namespace Polygon.Net
@@ -19,5 +20,10 @@ namespace Polygon.Net
 
         [JsonProperty("results")]
         public List<TickerInfo> Results { get; set; }
+
+        public IEnumerator GetEnumerator()
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }
