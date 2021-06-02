@@ -20,10 +20,5 @@ namespace Polygon.Net
 
         [JsonProperty("results")]
         public List<TickerInfo> Results { get; set; }
-
-        public IEnumerator GetEnumerator()
-        {
-            throw new System.NotImplementedException();
-        }
     }
 }

@@ -23,10 +23,6 @@ namespace Polygon.Net
             CreateMap<TickerInfo, TickerInfo>()
                 .ForMember(dest => dest.Name,
                     map => map.MapFrom(src => _parser.ExpandAllAbbreviationsFromString(src.Name, true)));
-            CreateMap<TickersResponse, TickersResponse>()
-                .ForMember(dest => dest.Results,
-                    map => map.MapFrom<IEnumerable>(src => src.Results.Select(x => _parser.ExpandAllAbbreviationsFromString(x.Name, true)) 
-                    ));
             CreateMap<TickerDetailsInfo, TickerDetailsInfo>()
                 .ForMember(dest => dest.Name,
                     map => map.MapFrom(src => _parser.ExpandAllAbbreviationsFromString(src.Name, true)));

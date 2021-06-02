@@ -64,8 +64,15 @@ namespace Polygon.Net
             var contentStr = await Get(requestUrl);
 
             var tickers = JsonConvert.DeserializeObject<TickersResponse>(contentStr);
+
+            if (!expandAbbreviations) return tickers;
             
-            return expandAbbreviations ? _mapper.Map<TickersResponse>(tickers) : tickers;
+            for ( var i = 0; i < tickers.Results.Count; i++ )
+            {
+                tickers.Results[i] = _mapper.Map<TickerInfo>(tickers.Results[i]);
+            }
+
+            return tickers;
         }
 
         public async Task<TickerDetailsResponse> GetTickerDetailsAsync(string ticker, string date = null, bool expandAbbreviations = false)
@@ -86,7 +93,7 @@ namespace Polygon.Net
             if (details != null && expandAbbreviations)
                 details.Results = _mapper.Map<TickerDetailsInfo>(details.Results);
 
-            return expandAbbreviations ? _mapper.Map<TickerDetailsResponse>(details) : details;
+            return details;
         }
         
         public async Task<TickerDetailsInfoV1> GetTickerDetailsV1Async(string stocksTicker, bool expandAbbreviations = false)

@@ -15,6 +15,7 @@ namespace Polygon.Net.Tests.FunctionalTests
 
         private const string TICKER_MSFT = "MSFT";
         private const string TICKER_AAPL = "AAPL";
+        private const string APPLE_EXPANDED = "Apple Incorporated";
 
         [TestMethod]
         public async Task GetTickerDetailsSucceedsAsync()
@@ -39,7 +40,7 @@ namespace Polygon.Net.Tests.FunctionalTests
             Assert.IsNotNull(tickerDetailsResponse);
             Assert.AreEqual(STATUS_OK, tickerDetailsResponse.Status);
             Assert.AreEqual(TICKER_AAPL, tickerDetailsResponse.Results.Ticker);
-            Assert.IsTrue(tickerDetailsResponse.Results.Name.Contains("Incorporated"));
+            Assert.IsTrue(tickerDetailsResponse.Results.Name == APPLE_EXPANDED);
             Assert.IsNotNull(tickerDetailsResponse.Results.PhoneNumber);
         }
 
@@ -127,7 +128,7 @@ namespace Polygon.Net.Tests.FunctionalTests
 
             var aaplTicker = tickersRepsonse.Results.First(x => x.Ticker == TICKER_AAPL);
             
-            Assert.IsTrue(aaplTicker.Name.Contains("Incorporated"));
+            Assert.IsTrue(aaplTicker.Name == APPLE_EXPANDED);
         }
 
         [TestMethod]
