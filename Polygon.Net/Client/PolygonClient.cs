@@ -21,20 +21,21 @@ namespace Polygon.Net
 
         private async Task<string> Get(string requestUrl)
         {
-            using var client = _dependencies.HttpClientFactory.CreateClient(_polygonSettings.HttpClientName);
-
-            requestUrl = $"{ requestUrl }{ (requestUrl.Contains("?") ? "&" : "?") }apikey={ _polygonSettings.ApiKey }";
-
-            var request = new HttpRequestMessage(HttpMethod.Get, requestUrl);
-
-            var response = await client.SendAsync(request);
-
-            if(!response.IsSuccessStatusCode)
+            using (var client = _dependencies.HttpClientFactory.CreateClient(_polygonSettings.HttpClientName))
             {
-                throw new PolygonHttpException(response.ReasonPhrase);
+                requestUrl = $"{ requestUrl }{ (requestUrl.Contains("?") ? "&" : "?") }apikey={ _polygonSettings.ApiKey }";
+
+                var request = new HttpRequestMessage(HttpMethod.Get, requestUrl);
+
+                var response = await client.SendAsync(request);
+
+                if (!response.IsSuccessStatusCode)
+                {
+                    throw new PolygonHttpException(response.ReasonPhrase);
+                }
+
+                return await response.Content.ReadAsStringAsync();
             }
-            
-            return await response.Content.ReadAsStringAsync();
         }
 
         private string GetQueryParameterString(Dictionary<string, string> queryParams)
