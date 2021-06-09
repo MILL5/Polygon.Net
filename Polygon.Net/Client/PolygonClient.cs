@@ -24,7 +24,7 @@ namespace Polygon.Net
 
         private async Task<string> Get(string requestUrl)
         {
-            using var client = _dependencies.HttpClientFactory.CreateClient(_polygonSettings.HttpClientName);
+            var client = _dependencies.HttpClientFactory.CreateClient(_polygonSettings.HttpClientName);
 
             requestUrl = $"{ requestUrl }{ (requestUrl.Contains("?") ? "&" : "?") }apikey={ _polygonSettings.ApiKey }";
 
