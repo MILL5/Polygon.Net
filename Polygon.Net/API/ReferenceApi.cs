@@ -29,7 +29,8 @@ namespace Polygon.Net
             string sort = null,
             string order = null,
             int? limit = null,
-            string nextUrl = null)
+            string nextUrl = null, 
+            bool expandAbbreviations = false)
         {
             var queryParams = new Dictionary<string, string>
             {
@@ -60,12 +61,21 @@ namespace Polygon.Net
                 requestUrl = $"{ _polygonSettings.ApiBaseUrl }{ TICKERS_ENDPOINT }{ queryParamStr }";
             }
             
-            var contentStr = await Get(requestUrl);
+            var contentStr = await Get(requestUrl).ConfigureAwait(false);
 
-            return JsonConvert.DeserializeObject<TickersResponse>(contentStr);
+            var tickers = JsonConvert.DeserializeObject<TickersResponse>(contentStr);
+
+            if (!expandAbbreviations) return tickers;
+            
+            for ( var i = 0; i < tickers.Results.Count; i++ )
+            {
+                tickers.Results[i] = _mapper.Map<TickerInfo>(tickers.Results[i]);
+            }
+
+            return tickers;
         }
 
-        public async Task<TickerDetailsResponse> GetTickerDetailsAsync(string ticker, string date = null)
+        public async Task<TickerDetailsResponse> GetTickerDetailsAsync(string ticker, string date = null, bool expandAbbreviations = false)
         {
             CheckIsNotNullOrWhitespace(nameof(ticker), ticker);
 
@@ -76,27 +86,34 @@ namespace Polygon.Net
                 requestUrl += $"?date={ FormatDateString(date) }";
             }
 
-            var contentStr = await Get(requestUrl);
+            var contentStr = await Get(requestUrl).ConfigureAwait(false);
 
-            return JsonConvert.DeserializeObject<TickerDetailsResponse>(contentStr);
+            var details = JsonConvert.DeserializeObject<TickerDetailsResponse>(contentStr);
+
+            if (details != null && expandAbbreviations)
+                details.Results = _mapper.Map<TickerDetailsInfo>(details.Results);
+
+            return details;
         }
         
-        public async Task<TickerDetailsInfoV1> GetTickerDetailsV1Async(string stocksTicker)
+        public async Task<TickerDetailsInfoV1> GetTickerDetailsV1Async(string stocksTicker, bool expandAbbreviations = false)
         {
             CheckIsNotNullOrWhitespace(nameof(stocksTicker), stocksTicker);
 
             var requestUrl = $"{ _polygonSettings.ApiBaseUrl }{ TICKERS_ENDPOINT_V1 }/{ stocksTicker }/company";
 
-            var contentStr = await Get(requestUrl);
+            var contentStr = await Get(requestUrl).ConfigureAwait(false);
 
-            return JsonConvert.DeserializeObject<TickerDetailsInfoV1>(contentStr);
+            var details = JsonConvert.DeserializeObject<TickerDetailsInfoV1>(contentStr);
+
+            return expandAbbreviations ? _mapper.Map<TickerDetailsInfoV1>(details) : details;
         }
 
         public async Task<List<ExchangeInfo>> GetStockExchangesAsync()
         {
             var requestUrl = $"{ _polygonSettings.ApiBaseUrl }{ EXCHANGES_ENDPOINT }";
 
-            var contentStr = await Get(requestUrl);
+            var contentStr = await Get(requestUrl).ConfigureAwait(false);
 
             return JsonConvert.DeserializeObject<List<ExchangeInfo>>(contentStr);
         }
@@ -128,7 +145,7 @@ namespace Polygon.Net
                 requestUrl = $"{ _polygonSettings.ApiBaseUrl }{ FINANCIALS_ENDPOINT }/{ stocksTicker }{ queryParamStr }";
             }
 
-            var contentStr = await Get(requestUrl);
+            var contentStr = await Get(requestUrl).ConfigureAwait(false);
 
             return JsonConvert.DeserializeObject<StockFinancialsResponse>(contentStr);
         }

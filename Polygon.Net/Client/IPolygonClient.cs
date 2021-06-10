@@ -20,11 +20,12 @@ namespace Polygon.Net
             string sort = null,
             string order = null,
             int? limit = null,
-            string nextUrl = null);
+            string nextUrl = null, 
+            bool expandAbbreviations = false);
 
-        Task<TickerDetailsInfoV1> GetTickerDetailsV1Async(string stocksTicker);
+        Task<TickerDetailsInfoV1> GetTickerDetailsV1Async(string stocksTicker, bool expandAbbreviations = false);
 
-        Task<TickerDetailsResponse> GetTickerDetailsAsync(string ticker, string date = null);
+        Task<TickerDetailsResponse> GetTickerDetailsAsync(string ticker, string date = null, bool expandAbbreviations = false);
 
         Task<List<ExchangeInfo>> GetStockExchangesAsync();
 

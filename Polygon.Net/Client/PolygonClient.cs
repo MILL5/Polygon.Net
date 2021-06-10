@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AutoMapper;
+using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Text;
@@ -11,31 +12,32 @@ namespace Polygon.Net
     {
         private readonly IPolygonDependencies _dependencies;
         public readonly PolygonSettings _polygonSettings;
+        public readonly IMapper _mapper;
 
         public PolygonClient(IPolygonDependencies dependencies)
         {
             CheckIsNotNull(nameof(dependencies), dependencies);
             _dependencies = dependencies;
             _polygonSettings = dependencies.Settings;
+            _mapper = dependencies.Mapper;
         }
 
         private async Task<string> Get(string requestUrl)
         {
-            using (var client = _dependencies.HttpClientFactory.CreateClient(_polygonSettings.HttpClientName))
+            var client = _dependencies.HttpClientFactory.CreateClient(_polygonSettings.HttpClientName);
+
+            requestUrl = $"{ requestUrl }{ (requestUrl.Contains("?") ? "&" : "?") }apikey={ _polygonSettings.ApiKey }";
+
+            var request = new HttpRequestMessage(HttpMethod.Get, requestUrl);
+
+            var response = await client.SendAsync(request).ConfigureAwait(false);
+
+            if(!response.IsSuccessStatusCode)
             {
-                requestUrl = $"{ requestUrl }{ (requestUrl.Contains("?") ? "&" : "?") }apikey={ _polygonSettings.ApiKey }";
-
-                var request = new HttpRequestMessage(HttpMethod.Get, requestUrl);
-
-                var response = await client.SendAsync(request);
-
-                if (!response.IsSuccessStatusCode)
-                {
-                    throw new PolygonHttpException(response.ReasonPhrase);
-                }
-
-                return await response.Content.ReadAsStringAsync();
+                throw new PolygonHttpException(response.ReasonPhrase);
             }
+            
+            return await response.Content.ReadAsStringAsync().ConfigureAwait(false);
         }
 
         private string GetQueryParameterString(Dictionary<string, string> queryParams)

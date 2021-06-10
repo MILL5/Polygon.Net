@@ -46,7 +46,7 @@ namespace Polygon.Net
                $"{ string.Format(AGGREGATES_BARS_ENDPOINT, stocksTicker, multiplier.ToString(), timespan.ToLower(), formattedFrom, formattedTo) }" +
                $"{ GetQueryParameterString(queryParams) }";
 
-           var contentStr = await Get(requestUrl);
+           var contentStr = await Get(requestUrl).ConfigureAwait(false);
 
            return JsonConvert.DeserializeObject<AggregatesBarsResponse>(contentStr);
         }
@@ -71,7 +71,7 @@ namespace Polygon.Net
                 $"{ string.Format(DAILY_OPEN_CLOSE_ENDPOINT, stocksTicker, formattedDate) }" +
                 $"{ GetQueryParameterString(queryParams) }";
 
-            var contentStr = await Get(requestUrl);
+            var contentStr = await Get(requestUrl).ConfigureAwait(false);
 
             return JsonConvert.DeserializeObject<DailyOpenCloseResponse>(contentStr);
        }
