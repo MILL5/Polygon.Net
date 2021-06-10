@@ -30,14 +30,14 @@ namespace Polygon.Net
 
             var request = new HttpRequestMessage(HttpMethod.Get, requestUrl);
 
-            var response = await client.SendAsync(request);
+            var response = await client.SendAsync(request).ConfigureAwait(false);
 
             if(!response.IsSuccessStatusCode)
             {
                 throw new PolygonHttpException(response.ReasonPhrase);
             }
             
-            return await response.Content.ReadAsStringAsync();
+            return await response.Content.ReadAsStringAsync().ConfigureAwait(false);
         }
 
         private string GetQueryParameterString(Dictionary<string, string> queryParams)

@@ -61,7 +61,7 @@ namespace Polygon.Net
                 requestUrl = $"{ _polygonSettings.ApiBaseUrl }{ TICKERS_ENDPOINT }{ queryParamStr }";
             }
             
-            var contentStr = await Get(requestUrl);
+            var contentStr = await Get(requestUrl).ConfigureAwait(false);
 
             var tickers = JsonConvert.DeserializeObject<TickersResponse>(contentStr);
 
@@ -86,7 +86,7 @@ namespace Polygon.Net
                 requestUrl += $"?date={ FormatDateString(date) }";
             }
 
-            var contentStr = await Get(requestUrl);
+            var contentStr = await Get(requestUrl).ConfigureAwait(false);
 
             var details = JsonConvert.DeserializeObject<TickerDetailsResponse>(contentStr);
 
@@ -102,7 +102,7 @@ namespace Polygon.Net
 
             var requestUrl = $"{ _polygonSettings.ApiBaseUrl }{ TICKERS_ENDPOINT_V1 }/{ stocksTicker }/company";
 
-            var contentStr = await Get(requestUrl);
+            var contentStr = await Get(requestUrl).ConfigureAwait(false);
 
             var details = JsonConvert.DeserializeObject<TickerDetailsInfoV1>(contentStr);
 
@@ -113,7 +113,7 @@ namespace Polygon.Net
         {
             var requestUrl = $"{ _polygonSettings.ApiBaseUrl }{ EXCHANGES_ENDPOINT }";
 
-            var contentStr = await Get(requestUrl);
+            var contentStr = await Get(requestUrl).ConfigureAwait(false);
 
             return JsonConvert.DeserializeObject<List<ExchangeInfo>>(contentStr);
         }
@@ -145,7 +145,7 @@ namespace Polygon.Net
                 requestUrl = $"{ _polygonSettings.ApiBaseUrl }{ FINANCIALS_ENDPOINT }/{ stocksTicker }{ queryParamStr }";
             }
 
-            var contentStr = await Get(requestUrl);
+            var contentStr = await Get(requestUrl).ConfigureAwait(false);
 
             return JsonConvert.DeserializeObject<StockFinancialsResponse>(contentStr);
         }
