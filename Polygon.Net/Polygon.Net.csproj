@@ -2,9 +2,9 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
-	<Version>1.0.8-alpha</Version>
-	<AssemblyVersion>1.0.8.0</AssemblyVersion>
-	<FileVersion>1.0.8.0</FileVersion>
+	<Version>1.0.9-alpha</Version>
+	<AssemblyVersion>1.0.9.0</AssemblyVersion>
+	<FileVersion>1.0.9.0</FileVersion>
     <Authors>MILL5</Authors>
     <Description>A .NET class library for use against the Polygon APIs supporting .NET Standard, .NET Core, and the new .NET 5.0</Description>
     <Copyright>Copyright © MILL5, LLC 2021</Copyright>
@@ -24,7 +24,7 @@
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="10.1.1" />
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="8.1.1" />
-    <PackageReference Include="M5.FinancialDataSanitizer" Version="1.0.2-alpha" />
+    <PackageReference Include="M5.FinancialDataSanitizer" Version="1.0.3-alpha" />
     <PackageReference Include="Microsoft.Extensions.Configuration" Version="5.0.0" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="5.0.1" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
