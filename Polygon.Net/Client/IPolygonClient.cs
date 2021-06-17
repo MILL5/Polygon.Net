@@ -36,7 +36,7 @@ namespace Polygon.Net
             int? limit = null,
             string nextUrl = null);
 
-        Task<AggregatesBarsResponse> GetAggregatesAsync(
+        Task<AggregatesBarsResponse> GetAggregatesBarsAsync(
             string stocksTicker,
             int multiplier,
             string timespan,
@@ -46,6 +46,7 @@ namespace Polygon.Net
             string sort = null,
             int? limit = null);
 
+        Task<GroupedDailyBarsResponse> GetGroupedDailyBarsAsync(string date, bool? unadjusted = null);
 
         Task<DailyOpenCloseResponse> GetDailyOpenCloseAsync(string stocksTicker, string date, bool? unadjusted = null);
     }
