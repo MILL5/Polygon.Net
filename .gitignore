@@ -60,6 +60,7 @@ build/
 ehthumbs.db
 Icon?
 Thumbs.db
+._*
 
 # Visual C++ cache files
 ipch/

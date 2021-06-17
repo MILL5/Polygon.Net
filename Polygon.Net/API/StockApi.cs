@@ -9,12 +9,15 @@ namespace Polygon.Net
     public partial class PolygonClient
     {
         private const string AGGREGATES_BARS_ENDPOINT =
-           "/v2/aggs/ticker/{0}/range/{1}/{2}/{3}/{4}";
+            "/v2/aggs/ticker/{0}/range/{1}/{2}/{3}/{4}";
+
+        private const string GROUPED_DAILY_BARS_ENDPOINT =
+            "/v2/aggs/grouped/locale/us/market/stocks/{0}";
 
         private const string DAILY_OPEN_CLOSE_ENDPOINT =
-           "/v1/open-close/{0}/{1}";
+            "/v1/open-close/{0}/{1}";
 
-        public async Task<AggregatesBarsResponse> GetAggregatesAsync(
+        public async Task<AggregatesBarsResponse> GetAggregatesBarsAsync(
            string stocksTicker, 
            int multiplier, 
            string timespan,
@@ -49,6 +52,26 @@ namespace Polygon.Net
            var contentStr = await Get(requestUrl).ConfigureAwait(false);
 
            return JsonConvert.DeserializeObject<AggregatesBarsResponse>(contentStr);
+        }
+
+        public async Task<GroupedDailyBarsResponse> GetGroupedDailyBarsAsync(string date, bool? unadjusted = null)
+        {
+            CheckIsNotNullOrWhitespace(nameof(date), date);
+            var formattedDate = FormatDateString(date);
+
+            var queryParams = new Dictionary<string, string>
+            {
+                {nameof(unadjusted), unadjusted?.ToString()},
+            };
+
+            var requestUrl =
+                $"{ _polygonSettings.ApiBaseUrl }" +
+                $"{ string.Format(GROUPED_DAILY_BARS_ENDPOINT, formattedDate) }" +
+                $"{ GetQueryParameterString(queryParams) }";
+
+            var contentStr = await Get(requestUrl).ConfigureAwait(false);
+
+            return JsonConvert.DeserializeObject<GroupedDailyBarsResponse>(contentStr);
         }
 
         public async Task<DailyOpenCloseResponse> GetDailyOpenCloseAsync(
