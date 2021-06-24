@@ -7,7 +7,8 @@ namespace Polygon.Net
 {
     public partial class PolygonClient
     {
-        private const string TICKERS_ENDPOINT = "/vX/reference/tickers";
+        private const string TICKERS_ENDPOINT = "/v3/reference/tickers";
+        private const string TICKER_DETAILS_ENDPOINT = "/vX/reference/tickers";
         private const string TICKERS_ENDPOINT_V1 = "/v1/meta/symbols";
 
         private const string EXCHANGES_ENDPOINT = "/v1/meta/exchanges";
@@ -79,7 +80,7 @@ namespace Polygon.Net
         {
             CheckIsNotNullOrWhitespace(nameof(ticker), ticker);
 
-            var requestUrl = $"{ _polygonSettings.ApiBaseUrl }{ TICKERS_ENDPOINT }/{ ticker }";
+            var requestUrl = $"{ _polygonSettings.ApiBaseUrl }{ TICKER_DETAILS_ENDPOINT }/{ ticker }";
 
             if (date != null)
             {
