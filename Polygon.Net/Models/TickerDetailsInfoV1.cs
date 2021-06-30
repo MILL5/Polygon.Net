@@ -9,7 +9,7 @@ namespace Polygon.Net
         public Uri Logo { get; set; }
 
         [JsonProperty("listdate")]
-        public DateTimeOffset Listdate { get; set; }
+        public DateTimeOffset? Listdate { get; set; }
 
         [JsonProperty("cik")]
         public long? Cik { get; set; }
