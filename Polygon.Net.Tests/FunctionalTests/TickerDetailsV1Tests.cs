@@ -10,20 +10,23 @@ namespace Polygon.Net.Tests.FunctionalTests
     {
         private const string TICKER_MSFT = "MSFT";
         private const string TICKER_AAPL = "AAPL";
+        private const string TICKER_NULL_LISTDATE = "AWH";
 
 
-        [TestMethod]
-        public async Task GetTickerDetailsV1SucceedsAsync()
+        [DataTestMethod]
+        [DataRow(TICKER_MSFT)]
+        [DataRow(TICKER_NULL_LISTDATE)]
+        public async Task GetTickerDetailsV1SucceedsAsync(string ticker)
         {
-            var tickerDetailsV1 = await PolygonTestClient.GetTickerDetailsV1Async(TICKER_MSFT);
+            var tickerDetailsV1 = await PolygonTestClient.GetTickerDetailsV1Async(ticker);
 
             Assert.IsInstanceOfType(tickerDetailsV1, typeof(TickerDetailsInfoV1));
 
             Assert.IsNotNull(tickerDetailsV1);
-            Assert.AreEqual(TICKER_MSFT, tickerDetailsV1.Symbol);
+            Assert.AreEqual(ticker, tickerDetailsV1.Symbol);
             Assert.IsNotNull(tickerDetailsV1.Phone);
         }
-        
+
         [TestMethod]
         public async Task GetTickerDetailsV1WithExpansionSucceedsAsync()
         {
