@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
-	<Version>1.0.11-alpha</Version>
+	<Version>1.0.12-alpha</Version>
 	<AssemblyVersion>1.0.12.0</AssemblyVersion>
 	<FileVersion>1.0.12.0</FileVersion>
     <Authors>MILL5</Authors>
