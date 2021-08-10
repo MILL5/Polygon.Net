@@ -62,7 +62,7 @@ namespace Polygon.Net.Tests.FunctionalTests
         [DataRow(null, "asc", null)]
         [DataRow(null, null, 1)]
         [DataRow(false, "desc", 10)]
-        public async Task GetAggregatesWithQueryParamsSucceedsAsync(bool? unadjusted, string sort, int? limit)
+        public async Task GetAggregatesWithQueryParamsSucceedsAsync(bool? adjusted, string sort, int? limit)
         {
             var response = await PolygonTestClient.GetAggregatesBarsAsync(
                 MSFT_TICKER, 
@@ -70,7 +70,7 @@ namespace Polygon.Net.Tests.FunctionalTests
                 TIMESPAN_DAY, 
                 FROM_DATE_STRING, 
                 TO_DATE_STRING,
-                unadjusted,
+                adjusted,
                 sort,
                 limit
             );
@@ -131,7 +131,7 @@ namespace Polygon.Net.Tests.FunctionalTests
         [TestMethod]
         public async Task GetGroupedDailyBarsUnadjustedSucceedsAsync()
         {
-            var response = await PolygonTestClient.GetGroupedDailyBarsAsync(FROM_DATE_STRING, true);
+            var response = await PolygonTestClient.GetGroupedDailyBarsAsync(FROM_DATE_STRING, false);
 
             Assert.IsNotNull(response);
             Assert.AreEqual(STATUS_OK, response.Status);
@@ -156,9 +156,9 @@ namespace Polygon.Net.Tests.FunctionalTests
         [DataRow(null)]
         [DataRow(true)]
         [DataRow(false)]
-        public async Task GetDailyOpenCloseSucceedsAsync(bool? unadjusted)
+        public async Task GetDailyOpenCloseSucceedsAsync(bool? adjusted)
         {
-            var response = await PolygonTestClient.GetDailyOpenCloseAsync(MSFT_TICKER, FROM_DATE_STRING, unadjusted);
+            var response = await PolygonTestClient.GetDailyOpenCloseAsync(MSFT_TICKER, FROM_DATE_STRING, adjusted);
 
             Assert.IsNotNull(response);
             Assert.IsInstanceOfType(response, typeof(DailyOpenCloseResponse));
@@ -175,10 +175,10 @@ namespace Polygon.Net.Tests.FunctionalTests
         [DataRow(null, FROM_DATE_STRING, true)]
         [DataRow(MSFT_TICKER, null, true)]
         [DataRow(null, null, true)]
-        public async Task GetDailyOpenCloseNullRouteParamsAsync(string stocksTicker, string date, bool? unadjusted)
+        public async Task GetDailyOpenCloseNullRouteParamsAsync(string stocksTicker, string date, bool? adjusted)
         {
             await Assert.ThrowsExceptionAsync<ArgumentNullException>(
-                async () => await PolygonTestClient.GetDailyOpenCloseAsync(stocksTicker, date, unadjusted));
+                async () => await PolygonTestClient.GetDailyOpenCloseAsync(stocksTicker, date, adjusted));
         }
 
         [TestMethod]

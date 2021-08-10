@@ -23,7 +23,7 @@ namespace Polygon.Net
            string timespan,
            string from, 
            string to,
-           bool? unadjusted = null,
+           bool? adjusted = null,
            string sort = null,
            int? limit = null)
        {
@@ -39,7 +39,7 @@ namespace Polygon.Net
 
            var queryParams = new Dictionary<string, string>
            {
-               {nameof(unadjusted), unadjusted?.ToString()},
+               {nameof(adjusted), adjusted?.ToString()},
                {nameof(sort), sort},
                {nameof(limit), limit?.ToString()}
            };
@@ -54,14 +54,14 @@ namespace Polygon.Net
            return JsonConvert.DeserializeObject<AggregatesBarsResponse>(contentStr);
         }
 
-        public async Task<GroupedDailyBarsResponse> GetGroupedDailyBarsAsync(string date, bool? unadjusted = null)
+        public async Task<GroupedDailyBarsResponse> GetGroupedDailyBarsAsync(string date, bool? adjusted = null)
         {
             CheckIsNotNullOrWhitespace(nameof(date), date);
             var formattedDate = FormatDateString(date);
 
             var queryParams = new Dictionary<string, string>
             {
-                {nameof(unadjusted), unadjusted?.ToString()},
+                {nameof(adjusted), adjusted?.ToString()},
             };
 
             var requestUrl =
@@ -77,7 +77,7 @@ namespace Polygon.Net
         public async Task<DailyOpenCloseResponse> GetDailyOpenCloseAsync(
            string stocksTicker,
            string date,
-           bool? unadjusted = null)
+           bool? adjusted = null)
         {
             CheckIsNotNullOrWhitespace(nameof(stocksTicker), stocksTicker);
             CheckIsNotNullOrWhitespace(nameof(date), date);
@@ -86,7 +86,7 @@ namespace Polygon.Net
 
             var queryParams = new Dictionary<string, string>
             {
-                {nameof(unadjusted), unadjusted?.ToString()},
+                {nameof(adjusted), adjusted?.ToString()},
             };
 
             var requestUrl =

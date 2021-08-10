@@ -42,12 +42,12 @@ namespace Polygon.Net
             string timespan,
             string from,
             string to,
-            bool? unadjusted = null,
+            bool? adjusted = null,
             string sort = null,
             int? limit = null);
 
-        Task<GroupedDailyBarsResponse> GetGroupedDailyBarsAsync(string date, bool? unadjusted = null);
+        Task<GroupedDailyBarsResponse> GetGroupedDailyBarsAsync(string date, bool? adjusted = null);
 
-        Task<DailyOpenCloseResponse> GetDailyOpenCloseAsync(string stocksTicker, string date, bool? unadjusted = null);
+        Task<DailyOpenCloseResponse> GetDailyOpenCloseAsync(string stocksTicker, string date, bool? adjusted = null);
     }
 }
