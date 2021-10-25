@@ -1,7 +1,7 @@
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using static Polygon.Net.Tests.TestManager;
 
 namespace Polygon.Net.Tests.FunctionalTests
@@ -65,10 +65,10 @@ namespace Polygon.Net.Tests.FunctionalTests
         public async Task GetAggregatesWithQueryParamsSucceedsAsync(bool? adjusted, string sort, int? limit)
         {
             var response = await PolygonTestClient.GetAggregatesBarsAsync(
-                MSFT_TICKER, 
-                MULTIPLIER, 
-                TIMESPAN_DAY, 
-                FROM_DATE_STRING, 
+                MSFT_TICKER,
+                MULTIPLIER,
+                TIMESPAN_DAY,
+                FROM_DATE_STRING,
                 TO_DATE_STRING,
                 adjusted,
                 sort,
@@ -80,7 +80,7 @@ namespace Polygon.Net.Tests.FunctionalTests
             Assert.IsTrue(response.Results.Count >= 1);
             Assert.AreEqual(response.Ticker, MSFT_TICKER);
         }
-        
+
         [DataTestMethod]
         [DataRow(null, MULTIPLIER, TIMESPAN_DAY, FROM_DATE_STRING, TO_DATE_STRING)]
         [DataRow(MSFT_TICKER, MULTIPLIER, null, FROM_STRING_MM_DD_YYYY, TO_DATE_STRING)]

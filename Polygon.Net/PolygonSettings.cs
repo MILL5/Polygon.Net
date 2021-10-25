@@ -6,12 +6,12 @@
 
         private const string POLYGON_HTTPCLIENT_NAME = "PolygonHttpClient";
 
-        public string ApiBaseUrl 
-        {   
+        public string ApiBaseUrl
+        {
             get
             {
                 return POLYGON_API_BASE_URL;
-            } 
+            }
         }
 
         public string ApiKey { get; set; }

@@ -1,5 +1,5 @@
-﻿using System.Net.Http;
-using AutoMapper;
+﻿using AutoMapper;
+using System.Net.Http;
 using static Pineapple.Common.Preconditions;
 
 namespace Polygon.Net

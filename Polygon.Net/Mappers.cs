@@ -8,8 +8,8 @@ namespace Polygon.Net
         private readonly AbbreviationParser _parser;
         public Mappers()
         {
-          ConfigureMappings();
-          _parser = new AbbreviationParser();
+            ConfigureMappings();
+            _parser = new AbbreviationParser();
         }
 
         public void ConfigureMappings()

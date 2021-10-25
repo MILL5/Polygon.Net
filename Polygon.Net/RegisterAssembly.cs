@@ -19,7 +19,7 @@ namespace Polygon.Net
             CheckIsNotNull(nameof(config), config);
 
             CheckIsNotNull(POLYGON_API_KEY_NAME, config[POLYGON_API_KEY_NAME]);
-            
+
             var settings = new PolygonSettings
             {
                 ApiKey = config[POLYGON_API_KEY_NAME],
