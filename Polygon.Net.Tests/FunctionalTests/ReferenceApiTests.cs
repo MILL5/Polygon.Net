@@ -275,49 +275,67 @@ namespace Polygon.Net.Tests.FunctionalTests
         [TestMethod]
         public async Task GetStockDividendSucceedsAsync()
         {
-            var stockDividendsRepsonse = await PolygonTestClient.GetStockDividendsAsync(TICKER_AAPL);
+            var stockDividendsResponse = await PolygonTestClient.GetStockDividendsAsync(TICKER_AAPL);
 
-            Assert.IsInstanceOfType(stockDividendsRepsonse, typeof(StockDividendsResponse));
+            Assert.IsInstanceOfType(stockDividendsResponse, typeof(StockDividendsResponse));
 
-            Assert.IsNotNull(stockDividendsRepsonse);
-            Assert.AreEqual(STATUS_OK, stockDividendsRepsonse.Status);
+            Assert.IsNotNull(stockDividendsResponse);
+            Assert.IsTrue(stockDividendsResponse.Count >= 1);
+
+            var dividend = stockDividendsResponse.Results.FirstOrDefault();
+
+            Assert.AreEqual(dividend.Ticker, TICKER_AAPL);
+            Assert.IsTrue(DateTime.TryParse(dividend.ExDate, out DateTime exDate));
+            Assert.IsTrue(DateTime.TryParse(dividend.RecordDate, out DateTime recordDate));
+            Assert.IsTrue(DateTime.TryParse(dividend.PaymentDate, out DateTime paymentDate));
+            Assert.IsTrue(decimal.TryParse(dividend.Amount, out decimal amount));
+            Assert.AreEqual(STATUS_OK, stockDividendsResponse.Status);
         }
 
         [TestMethod]
         public async Task GetStockDividendBadTickerAsync()
         {
-            var stockDividendsRepsonse = await PolygonTestClient.GetStockDividendsAsync("1AP2L3");
+            var stockDividendsResponse = await PolygonTestClient.GetStockDividendsAsync("1AP2L3");
+            
+            Assert.IsInstanceOfType(stockDividendsResponse, typeof(StockDividendsResponse));
 
-            Assert.IsInstanceOfType(stockDividendsRepsonse, typeof(StockDividendsResponse));
-
-            Assert.IsNotNull(stockDividendsRepsonse);
-            Assert.AreEqual(stockDividendsRepsonse.Count, 0);
-            Assert.AreEqual(STATUS_OK, stockDividendsRepsonse.Status);
+            Assert.IsNotNull(stockDividendsResponse);
+            Assert.AreEqual(stockDividendsResponse.Count, 0);            
+            Assert.AreEqual(STATUS_OK, stockDividendsResponse.Status);
         }
 
         [TestMethod]
-        public async Task GetStockSpiltSucceedsAsync()
+        public async Task GetStockSplitSucceedsAsync()
         {
-            var stockSplitsRepsonse = await PolygonTestClient.GetStockSplitsAsync(TICKER_AAPL);
+            var stockSplitsResponse = await PolygonTestClient.GetStockSplitsAsync(TICKER_AAPL);
 
-            Assert.IsInstanceOfType(stockSplitsRepsonse, typeof(StockSplitsResponse));
+            Assert.IsInstanceOfType(stockSplitsResponse, typeof(StockSplitsResponse));
 
-            Assert.IsNotNull(stockSplitsRepsonse);
-            Assert.IsTrue(stockSplitsRepsonse.Count >= 1);
-            Assert.AreEqual(stockSplitsRepsonse.Results.FirstOrDefault().Ticker, TICKER_AAPL);
-            Assert.AreEqual(STATUS_OK, stockSplitsRepsonse.Status);
+            Assert.IsNotNull(stockSplitsResponse);
+            Assert.IsTrue(stockSplitsResponse.Count >= 1);
+
+            var split = stockSplitsResponse.Results.FirstOrDefault();
+
+            Assert.AreEqual(stockSplitsResponse.Results.FirstOrDefault().Ticker, TICKER_AAPL);
+            Assert.IsTrue(DateTime.TryParse(split.ExDate, out DateTime exDate));
+            Assert.IsTrue(DateTime.TryParse(split.DeclaredDate, out DateTime declaredDate));
+            Assert.IsTrue(DateTime.TryParse(split.PaymentDate, out DateTime paymentDate));
+            Assert.IsTrue(decimal.TryParse(split.Ratio, out decimal ratio));
+            Assert.IsTrue(int.TryParse(split.ForFactor, out int forfactor));
+            Assert.IsTrue(int.TryParse(split.ToFactor, out int tofactor));
+            Assert.AreEqual(STATUS_OK, stockSplitsResponse.Status);
         }
 
         [TestMethod]
-        public async Task GetStockSpiltBadTickerAsync()
+        public async Task GetStockSplitBadTickerAsync()
         {
-            var stockSplitsRepsonse = await PolygonTestClient.GetStockSplitsAsync("1AP2L3");
+            var stockSplitsResponse = await PolygonTestClient.GetStockSplitsAsync("1AP2L3");
 
-            Assert.IsInstanceOfType(stockSplitsRepsonse, typeof(StockSplitsResponse));
+            Assert.IsInstanceOfType(stockSplitsResponse, typeof(StockSplitsResponse));
 
-            Assert.IsNotNull(stockSplitsRepsonse);
-            Assert.AreEqual(stockSplitsRepsonse.Count, 0);            
-            Assert.AreEqual(STATUS_OK, stockSplitsRepsonse.Status);
+            Assert.IsNotNull(stockSplitsResponse);
+            Assert.AreEqual(stockSplitsResponse.Count, 0);            
+            Assert.AreEqual(STATUS_OK, stockSplitsResponse.Status);
         }
     }
 }
