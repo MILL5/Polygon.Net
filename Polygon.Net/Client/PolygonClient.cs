@@ -32,11 +32,11 @@ namespace Polygon.Net
 
             var response = await client.SendAsync(request).ConfigureAwait(false);
 
-            if(!response.IsSuccessStatusCode)
+            if (!response.IsSuccessStatusCode)
             {
                 throw new PolygonHttpException(response.ReasonPhrase);
             }
-            
+
             return await response.Content.ReadAsStringAsync().ConfigureAwait(false);
         }
 
@@ -44,15 +44,15 @@ namespace Polygon.Net
         {
             var sb = new StringBuilder();
 
-            foreach(var qp in queryParams)
+            foreach (var qp in queryParams)
             {
-                if(qp.Value != null)
+                if (qp.Value != null)
                 {
                     sb.Append($"&{ qp.Key }={ qp.Value }");
                 }
             }
 
-            if(sb.Length == 0)
+            if (sb.Length == 0)
             {
                 return string.Empty;
             }
@@ -66,7 +66,9 @@ namespace Polygon.Net
         private static string FormatDateString(string inputDateString)
         {
             if (inputDateString == null)
+            {
                 return null;
+            }
 
             var dateIsParsed = DateTime.TryParse(inputDateString, out DateTime outTime);
 

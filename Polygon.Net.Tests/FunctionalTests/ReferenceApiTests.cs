@@ -296,11 +296,11 @@ namespace Polygon.Net.Tests.FunctionalTests
         public async Task GetStockDividendBadTickerAsync()
         {
             var stockDividendsResponse = await PolygonTestClient.GetStockDividendsAsync("1AP2L3");
-            
+
             Assert.IsInstanceOfType(stockDividendsResponse, typeof(StockDividendsResponse));
 
             Assert.IsNotNull(stockDividendsResponse);
-            Assert.AreEqual(stockDividendsResponse.Count, 0);            
+            Assert.AreEqual(stockDividendsResponse.Count, 0);
             Assert.AreEqual(STATUS_OK, stockDividendsResponse.Status);
         }
 
@@ -334,7 +334,7 @@ namespace Polygon.Net.Tests.FunctionalTests
             Assert.IsInstanceOfType(stockSplitsResponse, typeof(StockSplitsResponse));
 
             Assert.IsNotNull(stockSplitsResponse);
-            Assert.AreEqual(stockSplitsResponse.Count, 0);            
+            Assert.AreEqual(stockSplitsResponse.Count, 0);
             Assert.AreEqual(STATUS_OK, stockSplitsResponse.Status);
         }
     }
