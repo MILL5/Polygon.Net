@@ -10,10 +10,10 @@ namespace Polygon.Net
         private const string TICKERS_ENDPOINT = "/v3/reference/tickers";
         private const string TICKER_DETAILS_ENDPOINT = "/vX/reference/tickers";
         private const string TICKERS_ENDPOINT_V1 = "/v1/meta/symbols";
-
         private const string EXCHANGES_ENDPOINT = "/v1/meta/exchanges";
-
         private const string FINANCIALS_ENDPOINT = "/v2/reference/financials";
+        private const string STOCK_DIVIDENDS = "/v2/reference/dividends/{0}";
+        private const string STOCK_SPLITS = "/v2/reference/splits/{0}";
 
         public async Task<TickersResponse> GetTickersAsync(
             string ticker = null,
@@ -30,7 +30,7 @@ namespace Polygon.Net
             string sort = null,
             string order = null,
             int? limit = null,
-            string nextUrl = null, 
+            string nextUrl = null,
             bool expandAbbreviations = false)
         {
             var queryParams = new Dictionary<string, string>
@@ -52,7 +52,7 @@ namespace Polygon.Net
             };
 
             string requestUrl;
-            if(nextUrl != null)
+            if (nextUrl != null)
             {
                 requestUrl = nextUrl;
             }
@@ -61,14 +61,17 @@ namespace Polygon.Net
                 var queryParamStr = GetQueryParameterString(queryParams);
                 requestUrl = $"{ _polygonSettings.ApiBaseUrl }{ TICKERS_ENDPOINT }{ queryParamStr }";
             }
-            
+
             var contentStr = await Get(requestUrl).ConfigureAwait(false);
 
             var tickers = JsonConvert.DeserializeObject<TickersResponse>(contentStr);
 
-            if (!expandAbbreviations) return tickers;
-            
-            for ( var i = 0; i < tickers.Results.Count; i++ )
+            if (!expandAbbreviations)
+            {
+                return tickers;
+            }
+
+            for (var i = 0; i < tickers.Results.Count; i++)
             {
                 tickers.Results[i] = _mapper.Map<TickerInfo>(tickers.Results[i]);
             }
@@ -92,11 +95,13 @@ namespace Polygon.Net
             var details = JsonConvert.DeserializeObject<TickerDetailsResponse>(contentStr);
 
             if (details != null && expandAbbreviations)
+            {
                 details.Results = _mapper.Map<TickerDetailsInfo>(details.Results);
+            }
 
             return details;
         }
-        
+
         public async Task<TickerDetailsInfoV1> GetTickerDetailsV1Async(string stocksTicker, bool expandAbbreviations = false)
         {
             CheckIsNotNullOrWhitespace(nameof(stocksTicker), stocksTicker);
@@ -149,6 +154,24 @@ namespace Polygon.Net
             var contentStr = await Get(requestUrl).ConfigureAwait(false);
 
             return JsonConvert.DeserializeObject<StockFinancialsResponse>(contentStr);
+        }
+
+        public async Task<StockDividendsResponse> GetStockDividendsAsync(string ticker)
+        {
+            var requestUrl = $"{ _polygonSettings.ApiBaseUrl }{ string.Format(STOCK_DIVIDENDS, ticker)}";
+
+            var contentStr = await Get(requestUrl).ConfigureAwait(false);
+
+            return JsonConvert.DeserializeObject<StockDividendsResponse>(contentStr);
+        }
+
+        public async Task<StockSplitsResponse> GetStockSplitsAsync(string ticker)
+        {
+            var requestUrl = $"{ _polygonSettings.ApiBaseUrl }{ string.Format(STOCK_SPLITS, ticker)}";
+
+            var contentStr = await Get(requestUrl).ConfigureAwait(false);
+
+            return JsonConvert.DeserializeObject<StockSplitsResponse>(contentStr);
         }
     }
 }

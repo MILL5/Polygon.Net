@@ -5,7 +5,7 @@ namespace Polygon.Net
 {
     public class Mappers : Profile
     {
-        private AbbreviationParser _parser;
+        private readonly AbbreviationParser _parser;
         public Mappers()
         {
           ConfigureMappings();
