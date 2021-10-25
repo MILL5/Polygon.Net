@@ -2,7 +2,6 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text.Json;
 using System.Threading.Tasks;
 using static Polygon.Net.Tests.TestManager;
 
@@ -29,7 +28,7 @@ namespace Polygon.Net.Tests.FunctionalTests
             Assert.AreEqual(TICKER_MSFT, tickerDetailsResponse.Results.Ticker);
             Assert.IsNotNull(tickerDetailsResponse.Results.PhoneNumber);
         }
-        
+
         [TestMethod]
         public async Task GetTickerDetailsWithExpansionSucceedsAsync()
         {
@@ -115,7 +114,7 @@ namespace Polygon.Net.Tests.FunctionalTests
             Assert.AreEqual(STATUS_OK, tickersRepsonse.Status);
             Assert.IsTrue(tickersRepsonse.Results.Any());
         }
-        
+
         [TestMethod]
         public async Task GetTickersWithExpansionSucceedsAsync()
         {
@@ -128,7 +127,7 @@ namespace Polygon.Net.Tests.FunctionalTests
             Assert.IsTrue(tickersRepsonse.Results.Any());
 
             var aaplTicker = tickersRepsonse.Results.First(x => x.Ticker == TICKER_AAPL);
-            
+
             Assert.IsTrue(aaplTicker.Name == APPLE_EXPANDED);
         }
 
@@ -187,7 +186,7 @@ namespace Polygon.Net.Tests.FunctionalTests
         public async Task GetTickersWithBadParamsAsync()
         {
             await Assert.ThrowsExceptionAsync<PolygonHttpException>(
-                async () => 
+                async () =>
                 await PolygonTestClient
                 .GetTickersAsync(
                     tickergt: "weryb",
@@ -271,6 +270,54 @@ namespace Polygon.Net.Tests.FunctionalTests
                     type: "adsfasdf",
                     sort: "cxzvcxzcvz",
                     limit: 500000));
+        }
+
+        [TestMethod]
+        public async Task GetStockDividendSucceedsAsync()
+        {
+            var stockDividendsRepsonse = await PolygonTestClient.GetStockDividendsAsync(TICKER_AAPL);
+
+            Assert.IsInstanceOfType(stockDividendsRepsonse, typeof(StockDividendsResponse));
+
+            Assert.IsNotNull(stockDividendsRepsonse);
+            Assert.AreEqual(STATUS_OK, stockDividendsRepsonse.Status);
+        }
+
+        [TestMethod]
+        public async Task GetStockDividendBadTickerAsync()
+        {
+            var stockDividendsRepsonse = await PolygonTestClient.GetStockDividendsAsync("1AP2L3");
+
+            Assert.IsInstanceOfType(stockDividendsRepsonse, typeof(StockDividendsResponse));
+
+            Assert.IsNotNull(stockDividendsRepsonse);
+            Assert.AreEqual(stockDividendsRepsonse.Count, 0);
+            Assert.AreEqual(STATUS_OK, stockDividendsRepsonse.Status);
+        }
+
+        [TestMethod]
+        public async Task GetStockSpiltSucceedsAsync()
+        {
+            var stockSplitsRepsonse = await PolygonTestClient.GetStockSplitsAsync(TICKER_AAPL);
+
+            Assert.IsInstanceOfType(stockSplitsRepsonse, typeof(StockSplitsResponse));
+
+            Assert.IsNotNull(stockSplitsRepsonse);
+            Assert.IsTrue(stockSplitsRepsonse.Count >= 1);
+            Assert.AreEqual(stockSplitsRepsonse.Results.FirstOrDefault().Ticker, TICKER_AAPL);
+            Assert.AreEqual(STATUS_OK, stockSplitsRepsonse.Status);
+        }
+
+        [TestMethod]
+        public async Task GetStockSpiltBadTickerAsync()
+        {
+            var stockSplitsRepsonse = await PolygonTestClient.GetStockSplitsAsync("1AP2L3");
+
+            Assert.IsInstanceOfType(stockSplitsRepsonse, typeof(StockSplitsResponse));
+
+            Assert.IsNotNull(stockSplitsRepsonse);
+            Assert.AreEqual(stockSplitsRepsonse.Count, 0);            
+            Assert.AreEqual(STATUS_OK, stockSplitsRepsonse.Status);
         }
     }
 }

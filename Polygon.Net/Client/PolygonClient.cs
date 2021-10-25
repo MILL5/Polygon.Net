@@ -63,7 +63,7 @@ namespace Polygon.Net
             return sb.ToString();
         }
 
-        private string FormatDateString(string inputDateString)
+        private static string FormatDateString(string inputDateString)
         {
             if (inputDateString == null)
                 return null;
