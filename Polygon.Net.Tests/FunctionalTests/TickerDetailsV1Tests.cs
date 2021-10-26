@@ -1,6 +1,6 @@
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Threading.Tasks;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using static Polygon.Net.Tests.TestManager;
 
 namespace Polygon.Net.Tests.FunctionalTests

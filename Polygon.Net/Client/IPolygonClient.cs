@@ -20,7 +20,7 @@ namespace Polygon.Net
             string sort = null,
             string order = null,
             int? limit = null,
-            string nextUrl = null, 
+            string nextUrl = null,
             bool expandAbbreviations = false);
 
         Task<TickerDetailsInfoV1> GetTickerDetailsV1Async(string stocksTicker, bool expandAbbreviations = false);
@@ -49,5 +49,9 @@ namespace Polygon.Net
         Task<GroupedDailyBarsResponse> GetGroupedDailyBarsAsync(string date, bool? adjusted = null);
 
         Task<DailyOpenCloseResponse> GetDailyOpenCloseAsync(string stocksTicker, string date, bool? adjusted = null);
+
+        Task<StockDividendsResponse> GetStockDividendsAsync(string ticker);
+
+        Task<StockSplitsResponse> GetStockSplitsAsync(string ticker);
     }
 }
