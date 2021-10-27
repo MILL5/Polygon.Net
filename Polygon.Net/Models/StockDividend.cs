@@ -5,7 +5,7 @@ namespace Polygon.Net
     public class StockDividend
     {
         [JsonProperty("amount")]
-        public string Amount { get; set; }
+        public decimal Amount { get; set; }
 
         [JsonProperty("exDate")]
         public string ExDate { get; set; }
@@ -18,5 +18,8 @@ namespace Polygon.Net
 
         [JsonProperty("ticker")]
         public string Ticker { get; set; }
+
+        [JsonProperty("declaredDate")]
+        public string DeclaredDate { get; set; }
     }
 }
