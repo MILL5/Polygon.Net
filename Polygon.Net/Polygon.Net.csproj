@@ -1,12 +1,12 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net5.0</TargetFramework>
-	<Version>1.0.16</Version>
-	<AssemblyVersion>1.0.16.0</AssemblyVersion>
-	<FileVersion>1.0.16.0</FileVersion>
+    <TargetFramework>net6.0</TargetFramework>
+	<Version>1.0.17</Version>
+	<AssemblyVersion>1.0.17.0</AssemblyVersion>
+	<FileVersion>1.0.17.0</FileVersion>
     <Authors>MILL5</Authors>
-    <Description>A .NET class library for use against the Polygon APIs supporting .NET Standard, .NET Core, and the new .NET 5.0</Description>
+    <Description>A .NET class library for use against the Polygon APIs supporting .NET Standard, .NET Core, .NET 5.0, and the new .NET 6.0</Description>
     <Copyright>Copyright © MILL5, LLC 2021</Copyright>
     <PackageProjectUrl>https://github.com/MILL5/Polygon.Net</PackageProjectUrl>
     <RepositoryUrl>https://github.com/MILL5/Polygon.Net</RepositoryUrl>
