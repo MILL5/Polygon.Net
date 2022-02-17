@@ -14,9 +14,6 @@ namespace Polygon.Net
 
         public void ConfigureMappings()
         {
-            CreateMap<TickerDetailsInfoV1, TickerDetailsInfoV1>()
-                .ForMember(dest => dest.Name,
-                    map => map.MapFrom(src => _parser.ExpandAllAbbreviationsFromString(src.Name, true)));
             CreateMap<TickerInfo, TickerInfo>()
                 .ForMember(dest => dest.Name,
                     map => map.MapFrom(src => _parser.ExpandAllAbbreviationsFromString(src.Name, true)));

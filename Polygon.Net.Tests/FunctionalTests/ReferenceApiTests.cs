@@ -44,7 +44,7 @@ namespace Polygon.Net.Tests.FunctionalTests
         }
 
         [TestMethod]
-        public async Task GetTickerDetailsV1NoCikTickerSucceedsAsync()
+        public async Task GetTickerDetailsNoCikTickerSucceedsAsync()
         {
             var ticker = "AAA"; // select ETF symbols
             var tickerDetailsResponse = await PolygonTestClient.GetTickerDetailsAsync(ticker);
@@ -284,10 +284,10 @@ namespace Polygon.Net.Tests.FunctionalTests
 
             var dividend = stockDividendsResponse.Results.FirstOrDefault();
 
-            Assert.AreEqual(dividend.Ticker, "AFIN");
-            Assert.IsTrue(DateTime.TryParse(dividend.ExDate, out DateTime exDate));
-            Assert.IsTrue(DateTime.TryParse(dividend.RecordDate, out DateTime recordDate));
-            Assert.IsTrue(DateTime.TryParse(dividend.PaymentDate, out DateTime paymentDate));            
+            Assert.AreEqual("AFIN", dividend.Ticker);
+            Assert.IsTrue(DateTime.TryParse(dividend.ExDate, out _));
+            Assert.IsTrue(DateTime.TryParse(dividend.RecordDate, out _));
+            Assert.IsTrue(DateTime.TryParse(dividend.PaymentDate, out _));            
             Assert.AreEqual(STATUS_OK, stockDividendsResponse.Status);
         }
 
@@ -299,7 +299,7 @@ namespace Polygon.Net.Tests.FunctionalTests
             Assert.IsInstanceOfType(stockDividendsResponse, typeof(StockDividendsResponse));
 
             Assert.IsNotNull(stockDividendsResponse);
-            Assert.AreEqual(stockDividendsResponse.Count, 0);
+            Assert.AreEqual(0, stockDividendsResponse.Count);
             Assert.AreEqual(STATUS_OK, stockDividendsResponse.Status);
         }
 
@@ -316,9 +316,9 @@ namespace Polygon.Net.Tests.FunctionalTests
             var split = stockSplitsResponse.Results.FirstOrDefault();
 
             Assert.AreEqual(stockSplitsResponse.Results.FirstOrDefault().Ticker, TICKER_AAPL);
-            Assert.IsTrue(DateTime.TryParse(split.ExDate, out DateTime exDate));
-            Assert.IsTrue(DateTime.TryParse(split.DeclaredDate, out DateTime declaredDate));
-            Assert.IsTrue(DateTime.TryParse(split.PaymentDate, out DateTime paymentDate));            
+            Assert.IsTrue(DateTime.TryParse(split.ExDate, out _));
+            Assert.IsTrue(DateTime.TryParse(split.DeclaredDate, out _));
+            Assert.IsTrue(DateTime.TryParse(split.PaymentDate, out _));            
             Assert.AreEqual(STATUS_OK, stockSplitsResponse.Status);
         }
 
@@ -330,7 +330,7 @@ namespace Polygon.Net.Tests.FunctionalTests
             Assert.IsInstanceOfType(stockSplitsResponse, typeof(StockSplitsResponse));
 
             Assert.IsNotNull(stockSplitsResponse);
-            Assert.AreEqual(stockSplitsResponse.Count, 0);
+            Assert.AreEqual(0, stockSplitsResponse.Count);
             Assert.AreEqual(STATUS_OK, stockSplitsResponse.Status);
         }
     }
