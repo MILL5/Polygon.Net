@@ -9,7 +9,6 @@ namespace Polygon.Net
     {
         private const string TICKERS_ENDPOINT = "/v3/reference/tickers";
         private const string TICKER_DETAILS_ENDPOINT = "/vX/reference/tickers";
-        private const string TICKERS_ENDPOINT_V1 = "/v1/meta/symbols";
         private const string EXCHANGES_ENDPOINT = "/v1/meta/exchanges";
         private const string FINANCIALS_ENDPOINT = "/v2/reference/financials";
         private const string STOCK_DIVIDENDS = "/v2/reference/dividends/{0}";
@@ -100,19 +99,6 @@ namespace Polygon.Net
             }
 
             return details;
-        }
-
-        public async Task<TickerDetailsInfoV1> GetTickerDetailsV1Async(string stocksTicker, bool expandAbbreviations = false)
-        {
-            CheckIsNotNullOrWhitespace(nameof(stocksTicker), stocksTicker);
-
-            var requestUrl = $"{ _polygonSettings.ApiBaseUrl }{ TICKERS_ENDPOINT_V1 }/{ stocksTicker }/company";
-
-            var contentStr = await Get(requestUrl).ConfigureAwait(false);
-
-            var details = JsonConvert.DeserializeObject<TickerDetailsInfoV1>(contentStr);
-
-            return expandAbbreviations ? _mapper.Map<TickerDetailsInfoV1>(details) : details;
         }
 
         public async Task<List<ExchangeInfo>> GetStockExchangesAsync()
