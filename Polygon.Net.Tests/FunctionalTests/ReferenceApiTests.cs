@@ -1,8 +1,8 @@
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using static Polygon.Net.Tests.TestManager;
 
 namespace Polygon.Net.Tests.FunctionalTests
@@ -274,7 +274,7 @@ namespace Polygon.Net.Tests.FunctionalTests
 
         [TestMethod]
         public async Task GetStockDividendSucceedsAsync()
-        {            
+        {
             var stockDividendsResponse = await PolygonTestClient.GetStockDividendsAsync("AFIN");
 
             Assert.IsInstanceOfType(stockDividendsResponse, typeof(StockDividendsResponse));
@@ -287,7 +287,7 @@ namespace Polygon.Net.Tests.FunctionalTests
             Assert.AreEqual("AFIN", dividend.Ticker);
             Assert.IsTrue(DateTime.TryParse(dividend.ExDate, out _));
             Assert.IsTrue(DateTime.TryParse(dividend.RecordDate, out _));
-            Assert.IsTrue(DateTime.TryParse(dividend.PaymentDate, out _));            
+            Assert.IsTrue(DateTime.TryParse(dividend.PaymentDate, out _));
             Assert.AreEqual(STATUS_OK, stockDividendsResponse.Status);
         }
 
@@ -307,7 +307,7 @@ namespace Polygon.Net.Tests.FunctionalTests
         public async Task GetStockSplitSucceedsAsync()
         {
             var stockSplitsResponse = await PolygonTestClient.GetStockSplitsAsync(TICKER_AAPL);
-            
+
             Assert.IsInstanceOfType(stockSplitsResponse, typeof(StockSplitsResponse));
 
             Assert.IsNotNull(stockSplitsResponse);
@@ -318,7 +318,7 @@ namespace Polygon.Net.Tests.FunctionalTests
             Assert.AreEqual(stockSplitsResponse.Results.FirstOrDefault().Ticker, TICKER_AAPL);
             Assert.IsTrue(DateTime.TryParse(split.ExDate, out _));
             Assert.IsTrue(DateTime.TryParse(split.DeclaredDate, out _));
-            Assert.IsTrue(DateTime.TryParse(split.PaymentDate, out _));            
+            Assert.IsTrue(DateTime.TryParse(split.PaymentDate, out _));
             Assert.AreEqual(STATUS_OK, stockSplitsResponse.Status);
         }
 
