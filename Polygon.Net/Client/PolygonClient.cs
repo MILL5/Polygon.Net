@@ -1,9 +1,9 @@
-﻿using AutoMapper;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using AutoMapper;
 using static Pineapple.Common.Preconditions;
 
 namespace Polygon.Net

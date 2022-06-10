@@ -9,6 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Polygon.Net.Tests", "Polygo
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{3D784DB8-7417-47D4-9C0D-15FEAF07E4EC}"
 	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
 		.gitignore = .gitignore
 		polygonnet.runsettings = polygonnet.runsettings
 	EndProjectSection

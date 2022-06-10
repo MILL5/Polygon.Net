@@ -1,8 +1,8 @@
-﻿using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using System;
+﻿using System;
 using System.Net;
 using System.Net.Http;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using static Pineapple.Common.Preconditions;
 
 namespace Polygon.Net
