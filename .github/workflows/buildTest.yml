@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main
+      - devops/*
   pull_request:
     branches:
       - main
@@ -16,15 +17,32 @@ jobs:
     runs-on: ubuntu-latest
     env:
       PolygonApiKey: ${{ secrets.POLYGON_API_KEY }}
+      SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
-    steps:          
+    steps:
       - uses: actions/checkout@v2
 
-      - name: Install SonarQube Scanner
+      - name: Cache SonarCloud packages
+        uses: actions/cache@v1
+        with:
+          path: ~\sonar\cache
+          key: ${{ runner.os }}-sonar
+          restore-keys: ${{ runner.os }}-sonar
+
+      - name: Cache SonarCloud scanner
+        id: cache-sonar-scanner
+        uses: actions/cache@v1
+        with:
+          path: .\.sonar\scanner
+          key: ${{ runner.os }}-sonar-scanner
+          restore-keys: ${{ runner.os }}-sonar-scanner
+
+      - name: Install SonarCloud scanner
+        if: steps.cache-sonar-scanner.outputs.cache-hit != 'true'
         run: dotnet tool install --global dotnet-sonarscanner
 
-      - name: Begin SonarQube Scanner
-        run: dotnet sonarscanner begin /key:"Polygon.Net" /d:sonar.host.url="${{secrets.SONARQUBE_HOST}}" /d:sonar.login="${{secrets.SONARQUBE_TOKEN}}" /d:sonar.scm.disabled=false /d:sonar.scm.provider=git /d:sonar.links.scm="${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}.git" /d:sonar.cs.opencover.reportsPaths='**/coverage.opencover.xml'
+      - name: Begin SonarCloud Scanner
+        run: dotnet-sonarscanner begin /k:"MILL5_Polygon.Net" /o:"mill5-sonarcloud" /d:sonar.login="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.scm.disabled=false /d:sonar.scm.provider=git /d:sonar.links.scm="${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}.git" /d:sonar.cs.opencover.reportsPaths='**/coverage.opencover.xml'
 
       - name: Restore Dependencies
         run: dotnet restore Polygon.Net.sln
@@ -35,5 +53,5 @@ jobs:
       - name: Test
         run: dotnet test /p:CollectCoverage=true /p:CoverletOutputFormat=opencover /p:ExcludeByAttribute="Obsolete"
 
-      - name: End SonarQube Scanner
-        run: dotnet sonarscanner end /d:sonar.login="${{secrets.SONARQUBE_TOKEN}}"
+      - name: End SonarCloud Scanner
+        run: dotnet-sonarscanner end /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
