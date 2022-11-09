@@ -11,7 +11,7 @@ on:
 
 jobs:
 
-  test:
+  buildTest:
     name: Build and Test
     runs-on: ubuntu-latest
     env:
