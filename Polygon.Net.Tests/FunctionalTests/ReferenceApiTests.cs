@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -41,19 +41,6 @@ namespace Polygon.Net.Tests.FunctionalTests
             Assert.AreEqual(TICKER_AAPL, tickerDetailsResponse.Results.Ticker);
             Assert.IsTrue(tickerDetailsResponse.Results.Name == APPLE_EXPANDED);
             Assert.IsNotNull(tickerDetailsResponse.Results.PhoneNumber);
-        }
-
-        [TestMethod]
-        public async Task GetTickerDetailsNoCikTickerSucceedsAsync()
-        {
-            var ticker = "AAA"; // select ETF symbols
-            var tickerDetailsResponse = await PolygonTestClient.GetTickerDetailsAsync(ticker);
-
-            Assert.IsInstanceOfType(tickerDetailsResponse.Results, typeof(TickerDetailsInfo));
-
-            Assert.IsNotNull(tickerDetailsResponse);
-            Assert.AreEqual(ticker, tickerDetailsResponse.Results.Ticker);
-            Assert.IsNull(tickerDetailsResponse.Results.Cik);
         }
 
         [TestMethod]

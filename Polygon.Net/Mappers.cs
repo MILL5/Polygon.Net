@@ -1,11 +1,12 @@
-using AutoMapper;
-using M5.FinancialDataSanitizer;
+﻿using AutoMapper;
+using Cph.FinancialDataSanitizer;
 
 namespace Polygon.Net
 {
     public class Mappers : Profile
     {
         private readonly AbbreviationParser _parser;
+
         public Mappers()
         {
             ConfigureMappings();
@@ -17,6 +18,7 @@ namespace Polygon.Net
             CreateMap<TickerInfo, TickerInfo>()
                 .ForMember(dest => dest.Name,
                     map => map.MapFrom(src => _parser.ExpandAllAbbreviationsFromString(src.Name, true)));
+
             CreateMap<TickerDetailsInfo, TickerDetailsInfo>()
                 .ForMember(dest => dest.Name,
                     map => map.MapFrom(src => _parser.ExpandAllAbbreviationsFromString(src.Name, true)));

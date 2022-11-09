@@ -1,4 +1,4 @@
-name: CI - Build and Test
+﻿name: CI - Build and Test
 
 on:
   push:
@@ -11,7 +11,7 @@ on:
 
 jobs:
 
-  test:
+  buildTest:
     name: Build and Test
     runs-on: ubuntu-latest
     env:
@@ -19,16 +19,19 @@ jobs:
       SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
     steps:
-      - uses: actions/checkout@v2
+      - name: 🛒 checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0 # Shallow clones should be disabled for a better relevancy of analysis
 
-      - name: Cache SonarCloud packages
+      - name: ☁️ Cache SonarCloud packages
         uses: actions/cache@v1
         with:
           path: ~\sonar\cache
           key: ${{ runner.os }}-sonar
           restore-keys: ${{ runner.os }}-sonar
 
-      - name: Cache SonarCloud scanner
+      - name: ☁️ Cache SonarCloud scanner
         id: cache-sonar-scanner
         uses: actions/cache@v1
         with:
@@ -36,21 +39,25 @@ jobs:
           key: ${{ runner.os }}-sonar-scanner
           restore-keys: ${{ runner.os }}-sonar-scanner
 
-      - name: Install SonarCloud scanner
+      - name: ☁️ Install SonarCloud scanner
         if: steps.cache-sonar-scanner.outputs.cache-hit != 'true'
         run: dotnet tool install --global dotnet-sonarscanner
 
-      - name: Begin SonarCloud Scanner
+      - name: ☁️ Begin SonarCloud Scanner
         run: dotnet-sonarscanner begin /k:"MILL5_Polygon.Net" /o:"mill5-sonarcloud" /d:sonar.login="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.scm.disabled=false /d:sonar.scm.provider=git /d:sonar.links.scm="${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}.git" /d:sonar.cs.opencover.reportsPaths='**/coverage.opencover.xml'
 
-      - name: Restore Dependencies
+      - name: 📦 Add GitHub Nuget Source
+        run: |
+          dotnet nuget add source --name github "https://nuget.pkg.github.com/MILL5/index.json" --username m5github01 --password ${{ secrets.GH_TOKEN }} --store-password-in-clear-text
+
+      - name: 🚧 Restore
         run: dotnet restore Polygon.Net.sln
 
-      - name: Build
+      - name: 🛠️ Build
         run: dotnet build --no-restore --configuration Release
 
-      - name: Test
+      - name: 🧪 Run Tests
         run: dotnet test /p:CollectCoverage=true /p:CoverletOutputFormat=opencover /p:ExcludeByAttribute="Obsolete"
 
-      - name: End SonarCloud Scanner
+      - name: ☁️ End SonarCloud Scanner
         run: dotnet-sonarscanner end /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
