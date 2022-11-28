@@ -12,6 +12,7 @@ namespace Polygon.Net
         private const string FINANCIALS_ENDPOINT = "/v2/reference/financials";
         private const string STOCK_DIVIDENDS = "/v2/reference/dividends/{0}";
         private const string STOCK_SPLITS = "/v2/reference/splits/{0}";
+        private const string MARKET_STATUS = "/v1/marketstatus/upcoming";
 
         public async Task<TickersResponse> GetTickersAsync(
             string ticker = null,
@@ -157,6 +158,15 @@ namespace Polygon.Net
             var contentStr = await Get(requestUrl).ConfigureAwait(false);
 
             return JsonConvert.DeserializeObject<StockSplitsResponse>(contentStr);
+        }
+
+        public async Task<List<MarketHoliday>> GetMarketHolidaysAsync()
+        {
+            var requestUrl = $"{_polygonSettings.ApiBaseUrl}{MARKET_STATUS}";
+
+            var contentStr = await Get(requestUrl).ConfigureAwait(false);
+
+            return JsonConvert.DeserializeObject<List<MarketHoliday>>(contentStr);
         }
     }
 }
