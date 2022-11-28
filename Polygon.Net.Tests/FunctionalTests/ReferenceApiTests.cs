@@ -320,5 +320,18 @@ namespace Polygon.Net.Tests.FunctionalTests
             Assert.AreEqual(0, stockSplitsResponse.Count);
             Assert.AreEqual(STATUS_OK, stockSplitsResponse.Status);
         }
+
+        [TestMethod]
+        public async Task GetMarketHolidaysSucceeds()
+        {
+            var marketHolidays = await PolygonTestClient.GetMarketHolidaysAsync();
+
+            Assert.IsNotNull(marketHolidays);
+            Assert.AreNotEqual(0, marketHolidays.Count);
+
+            var firstHoliday = marketHolidays.FirstOrDefault();
+
+            Assert.IsInstanceOfType(firstHoliday, typeof(MarketHoliday));
+        }
     }
 }

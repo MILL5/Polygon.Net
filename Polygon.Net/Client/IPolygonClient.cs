@@ -51,5 +51,7 @@ namespace Polygon.Net
         Task<StockDividendsResponse> GetStockDividendsAsync(string ticker);
 
         Task<StockSplitsResponse> GetStockSplitsAsync(string ticker);
+
+        Task<List<MarketHoliday>> GetMarketHolidaysAsync();
     }
 }
