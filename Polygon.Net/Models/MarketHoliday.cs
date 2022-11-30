@@ -15,5 +15,11 @@ namespace Polygon.Net
 
         [JsonProperty("status")]
         public string Status { get; set; }
+
+        [JsonProperty("open")]
+        public string Open { get; set; }
+
+        [JsonProperty("close")]
+        public string Close { get; set; }
     }
 }
