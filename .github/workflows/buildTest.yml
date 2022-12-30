@@ -61,7 +61,7 @@ jobs:
 
       - name: 🧪 Run Tests
         continue-on-error: true
-        run: dotnet-coverage collect 'dotnet test Polygon.Net.Tests --no-build --verbosity minimal --settings github.runsettings' -f xml  -o 'coverage.xml'
+        run: dotnet-coverage collect 'dotnet test Polygon.Net.Tests --verbosity minimal --settings github.runsettings' -f xml  -o 'coverage.xml'
 
       - name: ☁️ End SonarCloud Scanner
         run: dotnet-sonarscanner end /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
