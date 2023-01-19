@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using Polygon.Net.Models;
 
 namespace Polygon.Net
 {
@@ -53,5 +54,7 @@ namespace Polygon.Net
         Task<StockSplitsResponse> GetStockSplitsAsync(string ticker);
 
         Task<List<MarketHoliday>> GetMarketHolidaysAsync();
+
+        Task<PolygonResponse<TickerType>> GetTickerTypesAsync(string assetClass = default, string locale = default);
     }
 }

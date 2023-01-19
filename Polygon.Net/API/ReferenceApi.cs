@@ -1,6 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
+using Polygon.Net.Models;
 using static Pineapple.Common.Preconditions;
 
 namespace Polygon.Net
@@ -13,6 +15,7 @@ namespace Polygon.Net
         private const string STOCK_DIVIDENDS = "/v2/reference/dividends/{0}";
         private const string STOCK_SPLITS = "/v2/reference/splits/{0}";
         private const string MARKET_STATUS = "/v1/marketstatus/upcoming";
+        private const string TICKER_TYPES = "/v3/reference/tickers/types";
 
         public async Task<TickersResponse> GetTickersAsync(
             string ticker = null,
@@ -167,6 +170,24 @@ namespace Polygon.Net
             var contentStr = await Get(requestUrl).ConfigureAwait(false);
 
             return JsonConvert.DeserializeObject<List<MarketHoliday>>(contentStr);
+        }
+
+        /// <summary>
+        /// Get the ticker types from Polygon for the asset class and locale.
+        /// </summary>
+        /// <param name="assetClass">One of the following values <see cref="AssetClass"/>.</param>
+        /// <param name="locale">One of the values "us" or "global".</param>
+        /// <returns></returns>
+        public async Task<PolygonResponse<TickerType>> GetTickerTypesAsync(string assetClass = default, string locale = default)
+        {
+            assetClass ??= AssetClass.Stocks;
+            locale ??= Locale.Us;
+
+            var requestUrl = $"{_polygonSettings.ApiBaseUrl}{TICKER_TYPES}?asset_class={assetClass}&locale={locale}";
+
+            var contentStr = await Get(requestUrl).ConfigureAwait(false);
+
+            return JsonConvert.DeserializeObject<PolygonResponse<TickerType>>(contentStr);
         }
     }
 }
