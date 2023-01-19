@@ -18,8 +18,6 @@ namespace Polygon.Net.Tests.FunctionalTests
         private const string TIMESPAN_DAY = "day";
         private const string FROM_DATE_STRING = "2020-10-14";
         private const string TO_DATE_STRING = "2020-10-20";
-        //private const string FROM_STRING_MM_DD_YYYY = "10-14-2020";
-        //private const string TO_STRING_MM_DD_YYYY = "10-20-2020";
         private const string FROM_UNIX = "1602648000000";
         private const string TO_UNIX = "1603166400000";
 
