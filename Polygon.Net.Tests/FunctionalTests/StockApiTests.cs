@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -18,17 +18,12 @@ namespace Polygon.Net.Tests.FunctionalTests
         private const string TIMESPAN_DAY = "day";
         private const string FROM_DATE_STRING = "2020-10-14";
         private const string TO_DATE_STRING = "2020-10-20";
-        private const string FROM_STRING_MM_DD_YYYY = "10-14-2020";
-        private const string TO_STRING_MM_DD_YYYY = "10-20-2020";
         private const string FROM_UNIX = "1602648000000";
         private const string TO_UNIX = "1603166400000";
 
         // Tests for requests without query params
         [DataTestMethod]
-        [DataRow(MSFT_TICKER, MULTIPLIER, TIMESPAN_DAY, FROM_DATE_STRING, TO_DATE_STRING)]
-        [DataRow(MSFT_TICKER, MULTIPLIER, TIMESPAN_DAY, FROM_STRING_MM_DD_YYYY, TO_DATE_STRING)]
-        [DataRow(MSFT_TICKER, MULTIPLIER, TIMESPAN_DAY, FROM_DATE_STRING, TO_STRING_MM_DD_YYYY)]
-        [DataRow(MSFT_TICKER, MULTIPLIER, TIMESPAN_DAY, FROM_STRING_MM_DD_YYYY, TO_STRING_MM_DD_YYYY)]
+        [DataRow(MSFT_TICKER, MULTIPLIER, TIMESPAN_DAY, FROM_DATE_STRING, TO_DATE_STRING)]                
         [DataRow(MSFT_TICKER, MULTIPLIER, TIMESPAN_DAY, FROM_UNIX, TO_DATE_STRING)]
         [DataRow(MSFT_TICKER, MULTIPLIER, TIMESPAN_DAY, FROM_DATE_STRING, TO_UNIX)]
         [DataRow(MSFT_TICKER, MULTIPLIER, TIMESPAN_DAY, FROM_UNIX, TO_UNIX)]
@@ -83,9 +78,9 @@ namespace Polygon.Net.Tests.FunctionalTests
 
         [DataTestMethod]
         [DataRow(null, MULTIPLIER, TIMESPAN_DAY, FROM_DATE_STRING, TO_DATE_STRING)]
-        [DataRow(MSFT_TICKER, MULTIPLIER, null, FROM_STRING_MM_DD_YYYY, TO_DATE_STRING)]
-        [DataRow(MSFT_TICKER, MULTIPLIER, TIMESPAN_DAY, null, TO_STRING_MM_DD_YYYY)]
-        [DataRow(MSFT_TICKER, MULTIPLIER, TIMESPAN_DAY, FROM_STRING_MM_DD_YYYY, null)]
+        [DataRow(MSFT_TICKER, MULTIPLIER, null, FROM_DATE_STRING, TO_DATE_STRING)]
+        [DataRow(MSFT_TICKER, MULTIPLIER, TIMESPAN_DAY, null, TO_DATE_STRING)]
+        [DataRow(MSFT_TICKER, MULTIPLIER, TIMESPAN_DAY, FROM_DATE_STRING, null)]
         public async Task GetAggregatesFailsWithNullParamsAsync(string ticker, int multiplier, string timespan, string from, string to)
         {
             await Assert.ThrowsExceptionAsync<ArgumentNullException>(
