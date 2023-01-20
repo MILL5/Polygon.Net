@@ -175,8 +175,8 @@ namespace Polygon.Net
         /// <summary>
         /// Get the ticker types from Polygon for the asset class and locale.
         /// </summary>
-        /// <param name="assetClass">One of the following values <see cref="AssetClass"/>.</param>
-        /// <param name="locale">One of the values "us" or "global".</param>
+        /// <param name="assetClass">One of the following values <see cref="AssetClass"/>, by default is "stocks".</param>
+        /// <param name="locale">One of the values "us" or "global" <see cref="Locale"/>, by default "us".</param>
         /// <returns></returns>
         public async Task<PolygonResponse<TickerType>> GetTickerTypesAsync(string assetClass = default, string locale = default)
         {

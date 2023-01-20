@@ -335,17 +335,31 @@ namespace Polygon.Net.Tests.FunctionalTests
             Assert.IsInstanceOfType(firstHoliday, typeof(MarketHoliday));
         }
 
-        [TestMethod]
-        public async Task GetTickerTypesSucceeds()
+        [DataTestMethod]
+        [DataRow("stocks", "us")]
+        public async Task GetTickerTypesSucceedsForStocksUs(string assetClass, string locale)
         {
-            var tickerTypes = await PolygonTestClient.GetTickerTypesAsync();
+            var tickerTypes = await PolygonTestClient.GetTickerTypesAsync(assetClass, locale);
 
             Assert.IsNotNull(tickerTypes);
+            Assert.IsTrue(tickerTypes.Count > 1);
+
             var actualCommonStock = tickerTypes.Results.SingleOrDefault(x => x.Code == "CS");
-
             var expectedCommonStock = new TickerType() { AssetClass = AssetClass.Stocks, Code = "CS", Description = "Common Stock", Locale = Locale.Us };
-
             Assert.AreEqual(expectedCommonStock, actualCommonStock);
+        }
+
+        [DataTestMethod]
+        [DataRow("stocks", "global")]
+        [DataRow("options", "us")]
+        [DataRow("crypto", "us")]
+        [DataRow("fx", "us")]
+        public async Task GetTickerTypesSucceedsForEmptyTypes(string assetClass, string locale)
+        {
+            var tickerTypes = await PolygonTestClient.GetTickerTypesAsync(assetClass, locale);
+
+            Assert.IsNotNull(tickerTypes);
+            Assert.IsTrue(tickerTypes.Count == 0);
         }
     }
 }
