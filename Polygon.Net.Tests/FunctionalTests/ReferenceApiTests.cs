@@ -28,6 +28,7 @@ namespace Polygon.Net.Tests.FunctionalTests
             Assert.AreEqual(STATUS_OK, tickerDetailsResponse.Status);
             Assert.AreEqual(TICKER_MSFT, tickerDetailsResponse.Results.Ticker);
             Assert.IsNotNull(tickerDetailsResponse.Results.PhoneNumber);
+            Assert.IsNotNull(tickerDetailsResponse.Results.TickerRoot);
         }
 
         [TestMethod]
