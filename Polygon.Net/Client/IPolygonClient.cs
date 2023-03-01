@@ -56,5 +56,7 @@ namespace Polygon.Net
         Task<List<MarketHoliday>> GetMarketHolidaysAsync();
 
         Task<PolygonResponse<TickerType>> GetTickerTypesAsync(string assetClass = default, string locale = default);
+
+        Task<NewsResponse> GetNewsAsync();
     }
 }
