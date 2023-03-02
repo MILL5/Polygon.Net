@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Polygon.Net.Models;
 
@@ -57,6 +58,8 @@ namespace Polygon.Net
 
         Task<PolygonResponse<TickerType>> GetTickerTypesAsync(string assetClass = default, string locale = default);
 
-        Task<NewsResponse> GetNewsAsync();
+        Task<NewsResponse> GetNewsAsync(DateTime? startTime = null, DateTime? endTime = null, string ticker = null, string order = null, int? limit = null, string sort = null);
+
+        Task<NewsResponse> GetTodayNews(string ticker = null, string order = default, int? limit = null, string sort = null);
     }
 }

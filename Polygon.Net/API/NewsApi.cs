@@ -11,11 +11,39 @@ public partial class PolygonClient
 {
     private const string NEWS_ENDPOINT = "/v2/reference/news";
 
-    public async Task<NewsResponse> GetNewsAsync()
+    public async Task<NewsResponse> GetNewsAsync(
+        DateTime? startTime, 
+        DateTime? endTime, 
+        string ticker = null,
+        string order = null,
+        int? limit = null,
+        string sort = null
+    )
     {
-        var RequestUrl = $"{_polygonSettings.ApiBaseUrl}{NEWS_ENDPOINT}";
-        var Request    = await Get(RequestUrl).ConfigureAwait(false);
+        var queryParams = new Dictionary<string, string>
+        {
+            { nameof(ticker), ticker },
+            { "published_utc.gte", startTime?.ToString() },
+            { "published_utc.lte", endTime?.ToString() },
+            { nameof(order), order },
+            { nameof(limit), limit?.ToString() },
+            { nameof(sort), sort },
+        };
 
-        return JsonConvert.DeserializeObject<NewsResponse>(Request);
+        var queryParamStr = GetQueryParameterString(queryParams);
+        var requestUrl    = $"{_polygonSettings.ApiBaseUrl}{NEWS_ENDPOINT}{queryParamStr}";
+        var contentStr    = await Get(requestUrl).ConfigureAwait(false);
+
+        return JsonConvert.DeserializeObject<NewsResponse>(contentStr);
+    }
+
+    public async Task<NewsResponse> GetTodayNews(
+        string ticker = null,
+        string order = null,
+        int? limit = null,
+        string sort = null
+    )
+    {
+        return await GetNewsAsync(DateTime.Now.Date, null, ticker, order, limit, sort);
     }
 }
