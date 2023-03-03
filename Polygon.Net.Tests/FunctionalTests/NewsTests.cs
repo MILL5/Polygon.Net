@@ -22,5 +22,22 @@ namespace Polygon.Net.Tests.FunctionalTests
             Assert.IsNotNull(NewsResponse);
             Assert.AreEqual(STATUS_OK, NewsResponse.Status);
         }
+
+
+        [TestMethod]
+        public async Task GetTodayNewsSucceedsAsync()
+        {
+            string currentDate = DateTime.Now.Date.ToString("yyyy-MM-dd");
+            var newsResponse   = await PolygonTestClient.GetTodayNews();
+
+            Assert.IsInstanceOfType(newsResponse.Results, typeof(List<NewsInfo>));
+            Assert.IsNotNull(newsResponse);
+            Assert.AreEqual(STATUS_OK, newsResponse.Status);
+
+            foreach (var news in newsResponse.Results)
+            {
+                Assert.AreEqual(currentDate, DateTime.Parse(news.Published_utc).ToString("yyyy-MM-dd"));
+            }
+        }
     }
 }

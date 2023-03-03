@@ -11,6 +11,16 @@ public partial class PolygonClient
 {
     private const string NEWS_ENDPOINT = "/v2/reference/news";
 
+    /// <summary>
+    /// Get the news from Polygon.
+    /// </summary>
+    /// <param name="startTime">Return results published after this date</param>
+    /// <param name="endTime">Return results published before this date</param>
+    /// <param name="ticker">The polygon API ticker by default is desc</param>
+    /// <param name="order">Order results based on the sort field</param>
+    /// <param name="limit">Limit the number of results returned, default is 10 and max is 1000</param>
+    /// <param name="sort">Sort field used for ordering</param>
+    /// <returns>NewsResponse</returns>
     public async Task<NewsResponse> GetNewsAsync(
         DateTime? startTime, 
         DateTime? endTime, 
@@ -23,8 +33,8 @@ public partial class PolygonClient
         var queryParams = new Dictionary<string, string>
         {
             { nameof(ticker), ticker },
-            { "published_utc.gte", startTime?.ToString() },
-            { "published_utc.lte", endTime?.ToString() },
+            { "published_utc.gte", startTime?.ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ss") },
+            { "published_utc.lte", endTime?.ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ss") },
             { nameof(order), order },
             { nameof(limit), limit?.ToString() },
             { nameof(sort), sort },
@@ -37,6 +47,14 @@ public partial class PolygonClient
         return JsonConvert.DeserializeObject<NewsResponse>(contentStr);
     }
 
+    /// <summary>
+    /// Get the today's news from Polygon.
+    /// </summary>
+    /// <param name="ticker">The polygon API ticker by default is desc</param>
+    /// <param name="order">Order results based on the sort field</param>
+    /// <param name="limit">Limit the number of results returned, default is 10 and max is 1000</param>
+    /// <param name="sort">Sort field used for ordering</param>
+    /// <returns>NewsResponse</returns>
     public async Task<NewsResponse> GetTodayNews(
         string ticker = null,
         string order = null,

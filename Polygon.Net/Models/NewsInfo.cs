@@ -10,7 +10,7 @@ namespace Polygon.Net.Models;
 public class NewsInfo
 {
     [JsonProperty("id")]
-    public string id { get; set; }
+    public string Id { get; set; }
 
     [JsonProperty("title")]
     public string Title { get; set; }
@@ -19,14 +19,14 @@ public class NewsInfo
     public string Description { get; set; }
 
     [JsonProperty("author")]
-    public string author { get; set; }
+    public string Author { get; set; }
 
     [JsonProperty("published_utc")]
-    public string published_utc { get; set; }
+    public string Published_utc { get; set; }
 
     [JsonProperty("keywords")]
     public List<string> Keywords { get; set; }
 
     [JsonProperty("tickers")]
-    public List<string> tickers { get; set; }  
+    public List<string> Tickers { get; set; }  
 }
