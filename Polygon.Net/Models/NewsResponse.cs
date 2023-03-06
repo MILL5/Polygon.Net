@@ -15,11 +15,11 @@ public class NewsResponse
     public string RequestId { get; set; }
 
     [JsonProperty("count")]
-    public int Count { get; set; }
+    public int Count { get; set; } = 0;
 
     [JsonProperty("next_url")]
     public string NextUrl { get; set; }
 
     [JsonProperty("results")]
-    public List<NewsInfo> Results { get; set; }
+    public List<NewsInfo> Results { get; set; }  = new List<NewsInfo>() { };
 }

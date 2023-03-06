@@ -25,8 +25,8 @@ public class NewsInfo
     public string Published_utc { get; set; }
 
     [JsonProperty("keywords")]
-    public List<string> Keywords { get; set; }
+    public List<string> Keywords { get; set; } = new List<string>() { };
 
     [JsonProperty("tickers")]
-    public List<string> Tickers { get; set; }  
+    public List<string> Tickers { get; set; } = new List<string>() { };
 }

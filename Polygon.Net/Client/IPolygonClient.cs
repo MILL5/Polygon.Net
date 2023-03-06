@@ -58,8 +58,8 @@ namespace Polygon.Net
 
         Task<PolygonResponse<TickerType>> GetTickerTypesAsync(string assetClass = default, string locale = default);
 
-        Task<NewsResponse> GetNewsAsync(DateTime? startTime = null, DateTime? endTime = null, string ticker = null, string order = null, int? limit = null, string sort = null);
+        Task<NewsResponse> GetNewsAsync(DateTime? startTime = default, DateTime? endTime = default, string ticker = null, string order = null, int? limit = null, string sort = null);
 
-        Task<NewsResponse> GetTodayNews(string ticker = null, string order = default, int? limit = null, string sort = null);
+        Task<NewsResponse> GetTodayNewsAsync(string ticker = default, string order = null, int? limit = null, string sort = null);
     }
 }

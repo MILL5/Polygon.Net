@@ -22,8 +22,8 @@ public partial class PolygonClient
     /// <param name="sort">Sort field used for ordering</param>
     /// <returns>NewsResponse</returns>
     public async Task<NewsResponse> GetNewsAsync(
-        DateTime? startTime, 
-        DateTime? endTime, 
+        DateTime? startTime,
+        DateTime? endTime,
         string ticker = null,
         string order = null,
         int? limit = null,
@@ -40,11 +40,12 @@ public partial class PolygonClient
             { nameof(sort), sort },
         };
 
-        var queryParamStr = GetQueryParameterString(queryParams);
-        var requestUrl    = $"{_polygonSettings.ApiBaseUrl}{NEWS_ENDPOINT}{queryParamStr}";
-        var contentStr    = await Get(requestUrl).ConfigureAwait(false);
+        string queryParamStr = GetQueryParameterString(queryParams);
+        string requestUrl = $"{_polygonSettings.ApiBaseUrl}{NEWS_ENDPOINT}{queryParamStr}";
+        string contentStr = await Get(requestUrl).ConfigureAwait(false);
+        NewsResponse newsResponse = JsonConvert.DeserializeObject<NewsResponse>(contentStr);
 
-        return JsonConvert.DeserializeObject<NewsResponse>(contentStr);
+        return newsResponse.Results.Count == 0 ? new NewsResponse() : newsResponse;
     }
 
     /// <summary>
@@ -55,7 +56,7 @@ public partial class PolygonClient
     /// <param name="limit">Limit the number of results returned, default is 10 and max is 1000</param>
     /// <param name="sort">Sort field used for ordering</param>
     /// <returns>NewsResponse</returns>
-    public async Task<NewsResponse> GetTodayNews(
+    public async Task<NewsResponse> GetTodayNewsAsync(
         string ticker = null,
         string order = null,
         int? limit = null,

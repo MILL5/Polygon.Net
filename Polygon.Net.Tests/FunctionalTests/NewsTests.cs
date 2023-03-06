@@ -16,11 +16,49 @@ namespace Polygon.Net.Tests.FunctionalTests
         [TestMethod]
         public async Task GetNewsSucceedsAsync()
         {
-            var NewsResponse = await PolygonTestClient.GetNewsAsync();
+            var newsResponse = await PolygonTestClient.GetNewsAsync();
 
-            Assert.IsInstanceOfType(NewsResponse.Results, typeof(List<NewsInfo>));
-            Assert.IsNotNull(NewsResponse);
-            Assert.AreEqual(STATUS_OK, NewsResponse.Status);
+            Assert.IsInstanceOfType(newsResponse.Results, typeof(List<NewsInfo>));
+            Assert.IsNotNull(newsResponse);
+            Assert.AreEqual(STATUS_OK, newsResponse.Status);
+        }
+
+        [TestMethod]
+        public async Task GetNewsWithParametersSucceedsAsync()
+        {
+            DateTime startTime  = new DateTime(2023, 03, 05);  // Start Specific Day
+            DateTime endTime    = new DateTime(2023, 03, 06);    // End Specific Day
+            int countNews       = 5;
+            String ticker       = "GOOGL";
+            DateTime dateTime   = startTime;
+
+            var newsResponse    = await PolygonTestClient.GetNewsAsync(startTime, endTime, ticker, "asc", countNews, "published_utc");
+
+            Assert.IsInstanceOfType(newsResponse.Results, typeof(List<NewsInfo>));
+            Assert.IsNotNull(newsResponse);
+            Assert.AreEqual(STATUS_OK, newsResponse.Status);
+            Assert.AreEqual(newsResponse.Count, countNews);
+
+            foreach (var news in newsResponse.Results)
+            {
+                DateTime publishedNews = DateTime.Parse(news.Published_utc);
+
+                Assert.AreEqual(startTime.ToString("yyyy-MM-dd"), publishedNews.ToString("yyyy-MM-dd"));
+                Assert.IsTrue(news.Tickers.Contains(ticker), "The ticker was not found inside tickers");
+                Assert.IsTrue(publishedNews > dateTime, "Date current news is not greater than before date news");
+
+                dateTime = publishedNews;
+            }
+
+        }
+
+        [TestMethod]
+        public async Task GetNewsEmptyAsync()
+        {
+            var newsResponse = await PolygonTestClient.GetNewsAsync(null, null, "ABCXYZ");
+
+            Assert.IsTrue(newsResponse.Count == 0, "the news count should be empty");
+            Assert.IsNull(newsResponse.Status);
         }
 
 
@@ -28,7 +66,7 @@ namespace Polygon.Net.Tests.FunctionalTests
         public async Task GetTodayNewsSucceedsAsync()
         {
             string currentDate = DateTime.Now.Date.ToString("yyyy-MM-dd");
-            var newsResponse   = await PolygonTestClient.GetTodayNews();
+            var newsResponse   = await PolygonTestClient.GetTodayNewsAsync();
 
             Assert.IsInstanceOfType(newsResponse.Results, typeof(List<NewsInfo>));
             Assert.IsNotNull(newsResponse);
