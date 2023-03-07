@@ -22,7 +22,10 @@ public class NewsInfo
     public string Author { get; set; }
 
     [JsonProperty("published_utc")]
-    public string Published_utc { get; set; }
+    public string PublishedUtc { get; set; }
+
+    [JsonProperty("article_url")]
+    public string ArticleUrl { get; set; }
 
     [JsonProperty("keywords")]
     public List<string> Keywords { get; set; } = new List<string>() { };

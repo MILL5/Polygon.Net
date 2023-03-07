@@ -41,7 +41,7 @@ namespace Polygon.Net.Tests.FunctionalTests
 
             foreach (var news in newsResponse.Results)
             {
-                DateTime publishedNews = DateTime.Parse(news.Published_utc);
+                DateTime publishedNews = DateTime.Parse(news.PublishedUtc);
 
                 Assert.AreEqual(startTime.ToString("yyyy-MM-dd"), publishedNews.ToString("yyyy-MM-dd"));
                 Assert.IsTrue(news.Tickers.Contains(ticker), "The ticker was not found inside tickers");
@@ -49,7 +49,6 @@ namespace Polygon.Net.Tests.FunctionalTests
 
                 dateTime = publishedNews;
             }
-
         }
 
         [TestMethod]
@@ -60,7 +59,6 @@ namespace Polygon.Net.Tests.FunctionalTests
             Assert.IsTrue(newsResponse.Count == 0, "the news count should be empty");
             Assert.IsNull(newsResponse.Status);
         }
-
 
         [TestMethod]
         public async Task GetTodayNewsSucceedsAsync()
@@ -74,8 +72,17 @@ namespace Polygon.Net.Tests.FunctionalTests
 
             foreach (var news in newsResponse.Results)
             {
-                Assert.AreEqual(currentDate, DateTime.Parse(news.Published_utc).ToString("yyyy-MM-dd"));
+                Assert.AreEqual(currentDate, DateTime.Parse(news.PublishedUtc).ToString("yyyy-MM-dd"));
             }
+        }
+
+        [TestMethod]
+        public async Task GetNextPageNewsAsync()
+        {
+            var newsResponse = await PolygonTestClient.GetNextPageNewsAsync("YXA9MjAyMy0wMy0wN1QxNCUzQTAxJTNBMDBaJmFzPUpvSnFQM0s4Zl9NSXVsY01Kb0NiaUNZeXBuQTZDdDd0RldrMmRiLVhYTkEmb3JkZXI9ZGVzY2VuZGluZw");
+            Assert.IsInstanceOfType(newsResponse.Results, typeof(List<NewsInfo>));
+            Assert.IsNotNull(newsResponse);
+            Assert.AreEqual(STATUS_OK, newsResponse.Status);
         }
     }
 }
