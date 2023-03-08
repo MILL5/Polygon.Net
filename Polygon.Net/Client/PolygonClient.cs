@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Net.Http;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Text;
 using AutoMapper;
 using static Pineapple.Common.Preconditions;
 
@@ -26,7 +22,7 @@ namespace Polygon.Net
         {
             var client = _dependencies.HttpClientFactory.CreateClient(_polygonSettings.HttpClientName);
 
-            requestUrl = $"{ requestUrl }{ (requestUrl.Contains("?") ? "&" : "?") }apikey={ _polygonSettings.ApiKey }";
+            requestUrl = $"{requestUrl}{(requestUrl.Contains("?") ? "&" : "?")}apikey={_polygonSettings.ApiKey}";
 
             var request = new HttpRequestMessage(HttpMethod.Get, requestUrl);
 
@@ -48,7 +44,7 @@ namespace Polygon.Net
             {
                 if (qp.Value != null)
                 {
-                    sb.Append($"&{ qp.Key }={ qp.Value }");
+                    sb.Append($"&{qp.Key}={qp.Value}");
                 }
             }
 
