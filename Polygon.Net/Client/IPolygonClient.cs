@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using Polygon.Net.Models;
+﻿using Polygon.Net.Models;
 
 namespace Polygon.Net
 {
@@ -56,26 +53,16 @@ namespace Polygon.Net
 
         Task<List<MarketHoliday>> GetMarketHolidaysAsync();
 
-        Task<PolygonResponse<TickerType>> GetTickerTypesAsync(string assetClass = default, string locale = default);
+        Task<PolygonResponse<TickerType>> GetTickerTypesAsync(string? assetClass = default, string? locale = default);
 
         Task<NewsResponse> GetNewsAsync(
-            DateTime? startTime = default, 
-            DateTime? endTime = default, 
-            string ticker = null, 
-            string order = null, 
-            int? limit = null, 
-            string sort = null, 
-            string nextPage = null
+            DateTime? startTime = null,
+            DateTime? endTime = null,
+            string? ticker = null,
+            string? order = null,
+            string? sort = null,
+            int limit = 0,
+            string? nextPage = null
          );
-
-        Task<NewsResponse> GetTodayNewsAsync(
-            string ticker = default, 
-            string order = null, 
-            int? limit = null,
-            string sort = null,
-            string nextPage = null
-        );
-
-        Task<NewsResponse> GetNextPageNewsAsync(string nextPage = null);
     }
 }

@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
+﻿using Microsoft.AspNetCore.Http.Extensions;
 using Newtonsoft.Json;
+using Polygon.Net.Http;
 using Polygon.Net.Models;
-using static Pineapple.Common.Preconditions;
 
 namespace Polygon.Net;
 
@@ -20,63 +18,23 @@ public partial class PolygonClient
     /// <param name="order">Order results based on the sort field</param>
     /// <param name="limit">Limit the number of results returned, default is 10 and max is 1000</param>
     /// <param name="sort">Sort field used for ordering</param>
+    /// <param name="nextPage">next page </param>
     /// <returns>NewsResponse</returns>
-    public async Task<NewsResponse> GetNewsAsync(
-        DateTime? startTime = default,
-        DateTime? endTime = default,
-        string ticker   = null,
-        string order    = null,
-        int? limit      = null,
-        string sort     = null,
-        string nextPage = null
-    )
+    /// 
+    public async Task<NewsResponse> GetNewsAsync(DateTime? startTime = null, DateTime? endTime = null, string? ticker = null, string? order = null, string? sort = null, int limit = 0, string? nextPage = null)
     {
-        var queryParams = new Dictionary<string, string>();
+        var qb = new QueryBuilder();
+        qb.AddIf(nextPage != null, "cursor", nextPage);
+        qb.AddIf(ticker != null, nameof(ticker), ticker);
+        qb.AddIf(order != null, nameof(order), order);
+        qb.AddIf(limit != 0, nameof(limit), limit + "");
+        qb.AddIf(sort != null, nameof(sort), sort);
+        qb.AddIf(startTime != null, "published_utc.gte", startTime?.ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ss"));
+        qb.AddIf(endTime != null, "published_utc.lte", endTime?.ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ss"));
 
-        if(nextPage != null) {
-            queryParams.Add("cursor", nextPage);
-        }else {
-            if(ticker != null) queryParams.Add(nameof(ticker), ticker);
-            if (order != null) queryParams.Add(nameof(order), order);
-            if (limit != null) queryParams.Add(nameof(limit), limit + "");
-            if (sort != null) queryParams.Add(nameof(sort), sort);
-
-            queryParams.Add("published_utc.gte", startTime?.ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ss"));
-            queryParams.Add("published_utc.lte", endTime?.ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ss"));
-        }
-
-        string queryParamStr = GetQueryParameterString(queryParams);
-        string requestUrl = $"{_polygonSettings.ApiBaseUrl}{NEWS_ENDPOINT}{queryParamStr}";
+        string requestUrl = $"{_polygonSettings.ApiBaseUrl}{NEWS_ENDPOINT}{qb.ToString()}";
         string contentStr = await Get(requestUrl).ConfigureAwait(false);
-        NewsResponse newsResponse = JsonConvert.DeserializeObject<NewsResponse>(contentStr);
 
-        return newsResponse.Results.Count == 0 ? new NewsResponse() : newsResponse;
-    }
-
-    /// <summary>
-    /// Get the today's Polygon news.
-    /// </summary>
-    /// <param name="ticker">The polygon API ticker by default is desc</param>
-    /// <param name="order">Order results based on the sort field</param>
-    /// <param name="limit">Limit the number of results returned, default is 10 and max is 1000</param>
-    /// <param name="sort">Sort field used for ordering</param>
-    /// <returns>NewsResponse</returns>
-    public async Task<NewsResponse> GetTodayNewsAsync(
-        string ticker   = null,
-        string order    = null,
-        int? limit      = null,
-        string sort     = null,
-        string nextPage = null
-    )
-    {
-        return await GetNewsAsync(DateTime.Now.Date, null, ticker, order, limit, sort, nextPage);
-    }
-
-    /// <summary>
-    /// Get the next page of Polygon news.
-    /// </summary>
-    /// <param name="nextPage">hash of the next page</param>
-    public async Task<NewsResponse> GetNextPageNewsAsync(string nextPage = null){
-        return await GetNewsAsync(null, null, null, null, null, null, nextPage);
+        return String.IsNullOrEmpty(contentStr) ? new NewsResponse() : JsonConvert.DeserializeObject<NewsResponse>(contentStr);
     }
 }

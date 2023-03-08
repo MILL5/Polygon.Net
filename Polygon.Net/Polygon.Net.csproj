@@ -20,11 +20,14 @@
 	  <PackageLicenseExpression>MIT</PackageLicenseExpression>
 	  <PackageIcon>polygon.png</PackageIcon>
 	  <UserSecretsId>e0e1f4de-446a-4f5c-879a-30ff77b4e606</UserSecretsId>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.0" />
     <PackageReference Include="Cph.FinancialDataSanitizer" Version="1.0.17" />
+    <PackageReference Include="Microsoft.AspNetCore.Http.Extensions" Version="2.2.0" />
     <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="6.0.1" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="7.0.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
