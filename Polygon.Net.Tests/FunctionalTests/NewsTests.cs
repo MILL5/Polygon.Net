@@ -2,7 +2,6 @@
 using Polygon.Net.Models;
 using static Polygon.Net.Tests.TestManager;
 
-#nullable enable
 namespace Polygon.Net.Tests.FunctionalTests
 {
     [TestClass]
@@ -46,7 +45,6 @@ namespace Polygon.Net.Tests.FunctionalTests
 
                 dateTime = publishedNews;
             }
-
         }
 
         [TestMethod]

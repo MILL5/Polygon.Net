@@ -20,7 +20,7 @@ public partial class PolygonClient
     /// <param name="sort">Sort field used for ordering</param>
     /// <param name="nextPage">next page </param>
     /// <returns>NewsResponse</returns>
-    /// 
+    ///
     public async Task<NewsResponse> GetNewsAsync(DateTime? startTime = null, DateTime? endTime = null, string? ticker = null, string? order = null, string? sort = null, int limit = 0, string? nextPage = null)
     {
         var qb = new QueryBuilder();

@@ -2,6 +2,7 @@
 using Newtonsoft.Json;
 
 namespace Polygon.Net.Models;
+
 public class NewsResponse
 {
     [JsonProperty("status")]
