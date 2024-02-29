@@ -14,6 +14,9 @@ jobs:
   buildTest:
     name: Build and Test
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        dotnet: ['6.0', '7.0']
     env:
       PolygonApiKey: ${{ secrets.POLYGON_API_KEY }}
       SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
